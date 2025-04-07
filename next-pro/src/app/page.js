@@ -85,7 +85,7 @@ export default function Home() {
       icon: <Stethoscope size={32} />,
       emoji: "👨‍⚕️",
       title: "For Doctors",
-      color: "#003092",
+      color: "#415A80",
       description: "Streamlined tools for healthcare professionals",
       features: [
         {
@@ -103,7 +103,7 @@ export default function Home() {
       icon: <LineChart size={32} />,
       emoji: "👩‍💼",
       title: "For Administrators",
-      color: "#FFAB5B",
+      color: "#A5D4DC",
       description: "Powerful management and analytics tools",
       features: [
         { icon: <PieChart size={18} />, text: "Real-time system analytics" },
@@ -115,7 +115,7 @@ export default function Home() {
       icon: <User size={32} />,
       emoji: "👨‍🦰",
       title: "For Patients",
-      color: "#003092",
+      color: "#415A80",
       description: "User-friendly self-service portal",
       features: [
         {
@@ -222,7 +222,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" />
 
         {/* Content */}
-        <div className="relative z-20 flex flex-col items-center justify-center h-full text-[#FFF2DB] text-center px-4">
+        <div className="relative z-20 flex flex-col items-center justify-center h-full text-[#D7E2E9] text-center px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
             Welcome to SmiloClinic
           </h1>
@@ -231,20 +231,20 @@ export default function Home() {
           </p>
           <a
             href="#book-now"
-            className="bg-[#FFF2DB] text-[#003092] hover:text-[#FFF2DB] px-6 py-3 rounded-full font-medium hover:bg-[#003092] transition"
+            className="bg-[#D7E2E9] text-[#415A80] hover:text-[#D7E2E9] px-6 py-3 rounded-full font-medium hover:bg-[#415A80] transition"
           >
             Book Now
           </a>
         </div>
       </div>
 
-      <section className="py-20 bg-gradient-to-b from-[#FFF2DB] to-white">
+      <section className="py-20 bg-gradient-to-b from-[#D7E2E9] to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <div className="inline-block px-4 py-1 rounded-full bg-[#003092]/10 text-[#003092] font-medium text-sm mb-4">
+            <div className="inline-block px-4 py-1 rounded-full bg-[#415A80]/10 text-[#415A80] font-medium text-sm mb-4">
               POWERFUL FEATURES
             </div>
-            <h2 className="text-4xl font-bold text-[#003092] mb-4">
+            <h2 className="text-4xl font-bold text-[#415A80] mb-4">
               Comprehensive Healthcare Management
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -258,12 +258,12 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-[#003092]/20 hover:translate-y-[-5px] group"
+                className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-xl hover:border-[#415A80]/20 hover:translate-y-[-5px] group"
               >
-                <div className="bg-[#FFF2DB] text-[#003092] rounded-xl p-3 inline-flex mb-4 group-hover:bg-[#003092] group-hover:text-white transition-colors duration-300">
+                <div className="bg-[#D7E2E9] text-[#415A80] rounded-xl p-3 inline-flex mb-4 group-hover:bg-[#415A80] group-hover:text-white transition-colors duration-300">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-[#003092] mb-2">
+                <h3 className="text-xl font-bold text-[#415A80] mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -273,13 +273,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#FFF2DB]">
+      <section className="py-20 bg-[#D7E2E9]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 rounded-full bg-[#003092]/10 text-[#003092] font-medium text-sm mb-4">
+            <span className="inline-block px-4 py-1 rounded-full bg-[#415A80]/10 text-[#415A80] font-medium text-sm mb-4">
               USER ROLES
             </span>
-            <h2 className="text-4xl font-bold text-[#003092] mb-4">
+            <h2 className="text-4xl font-bold text-[#415A80] mb-4">
               Tailored Experience For Everyone
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -291,7 +291,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {userTypes.map((type, index) => (
               <div key={index} className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#003092] to-[#FFAB5B] rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#415A80] to-[#A5D4DC] rounded-2xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:translate-y-[-5px] h-full flex flex-col">
                   <div className="flex items-center mb-6">
                     <div
@@ -299,7 +299,7 @@ export default function Home() {
                     >
                       <span className="text-3xl">{type.emoji}</span>
                     </div>
-                    <h3 className="ml-4 text-2xl font-bold text-[#003092]">
+                    <h3 className="ml-4 text-2xl font-bold text-[#415A80]">
                       {type.title}
                     </h3>
                   </div>
@@ -314,9 +314,9 @@ export default function Home() {
                       >
                         <div
                           className={`p-1 rounded-full bg-[${
-                            index === 1 ? "#FFAB5B" : "#003092"
+                            index === 1 ? "#A5D4DC" : "#415A80"
                           }]/10 text-[${
-                            index === 1 ? "#FFAB5B" : "#003092"
+                            index === 1 ? "#A5D4DC" : "#415A80"
                           }] mr-3 flex-shrink-0 mt-0.5`}
                         >
                           {feature.icon}
@@ -335,10 +335,10 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1 rounded-full bg-[#FFF2DB] text-[#003092] font-medium text-sm mb-4">
+            <span className="inline-block px-4 py-1 rounded-full bg-[#D7E2E9] text-[#415A80] font-medium text-sm mb-4">
               KNOWLEDGE & PREVENTION
             </span>
-            <h2 className="text-4xl font-bold text-[#003092] mb-4">
+            <h2 className="text-4xl font-bold text-[#415A80] mb-4">
               Dental Tips & Useful Articles
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -348,7 +348,7 @@ export default function Home() {
           </div>
 
           {/* Featured Article */}
-          <div className="bg-[#FFF2DB] rounded-2xl overflow-hidden mb-16 shadow-lg">
+          <div className="bg-[#D7E2E9] rounded-2xl overflow-hidden mb-16 shadow-lg">
             <div className="flex flex-col lg:flex-row">
               <div className="lg:w-1/2">
                 <img
@@ -358,7 +358,7 @@ export default function Home() {
                 />
               </div>
               <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold text-[#003092] mb-4">
+                <h3 className="text-2xl font-bold text-[#415A80] mb-4">
                   {featuredArticle.title}
                 </h3>
                 <p className="text-gray-600 mb-6">{featuredArticle.summary}</p>
@@ -367,7 +367,7 @@ export default function Home() {
                   {featuredArticle.tags.map((tag, idx) => (
                     <span
                       key={idx}
-                      className="bg-white px-3 py-1 rounded-full text-sm text-[#003092]"
+                      className="bg-white px-3 py-1 rounded-full text-sm text-[#415A80]"
                     >
                       {tag}
                     </span>
@@ -387,7 +387,7 @@ export default function Home() {
 
                 <button
                   onClick={() => openArticlePopup(featuredArticle)}
-                  className="mt-8 flex items-center justify-center gap-2 bg-[#003092] text-white py-3 px-6 rounded-lg hover:bg-[#003092]/90 transition-colors"
+                  className="mt-8 flex items-center justify-center gap-2 bg-[#415A80] text-white py-3 px-6 rounded-lg hover:bg-[#415A80]/90 transition-colors"
                 >
                   Read Full Article
                   <ArrowRight size={16} />
@@ -401,7 +401,7 @@ export default function Home() {
             {articles.map((article, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-[#FFAB5B]/30"
+                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-[#A5D4DC]/30"
               >
                 <img
                   src={article.image}
@@ -409,7 +409,7 @@ export default function Home() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-[#003092] mb-2">
+                  <h3 className="text-xl font-bold text-[#415A80] mb-2">
                     {article.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2">
@@ -422,7 +422,7 @@ export default function Home() {
                     </span>
                     <button
                       onClick={() => openArticlePopup(article)}
-                      className="text-[#003092] hover:cursor-pointer font-medium text-sm flex items-center hover:text-[#FFAB5B] transition-colors"
+                      className="text-[#415A80] hover:cursor-pointer font-medium text-sm flex items-center hover:text-[#A5D4DC] transition-colors"
                     >
                       Read More
                       <ArrowRight size={16} className="ml-1" />
@@ -435,7 +435,7 @@ export default function Home() {
 
           {/* View More Button */}
           <div className="mt-12 text-center">
-            <button className="px-8 py-3 bg-[#FFF2DB] hover:cursor-pointer text-[#003092] rounded-lg font-medium border border-[#003092]/10 hover:bg-[#003092] hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto">
+            <button className="px-8 py-3 bg-[#D7E2E9] hover:cursor-pointer text-[#415A80] rounded-lg font-medium border border-[#415A80]/10 hover:bg-[#415A80] hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto">
               View All Articles
               <ArrowRight size={16} />
             </button>
@@ -462,7 +462,7 @@ export default function Home() {
               <div className="p-6 md:p-8">
                 <div className="flex items-center mb-3">
                   {selectedArticle.category && (
-                    <span className="text-[#FFAB5B] text-sm font-medium">
+                    <span className="text-[#A5D4DC] text-sm font-medium">
                       {selectedArticle.category}
                     </span>
                   )}
@@ -471,7 +471,7 @@ export default function Home() {
                       {selectedArticle.tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="bg-[#FFF2DB] px-3 py-1 rounded-full text-sm text-[#003092]"
+                          className="bg-[#D7E2E9] px-3 py-1 rounded-full text-sm text-[#30486c]"
                         >
                           {tag}
                         </span>
@@ -480,7 +480,7 @@ export default function Home() {
                   )}
                 </div>
 
-                <h3 className="text-2xl font-bold text-[#003092] mb-4">
+                <h3 className="text-2xl font-bold text-[#415A80] mb-4">
                   {selectedArticle.title}
                 </h3>
 
@@ -508,7 +508,7 @@ export default function Home() {
                 <div className="mt-8 pt-4 border-t border-gray-200">
                   <button
                     onClick={closePopup}
-                    className="w-full py-3 bg-[#003092] text-white rounded-lg font-medium hover:bg-[#003092]/90 transition-colors"
+                    className="w-full py-3 bg-[#415A80] text-white rounded-lg font-medium hover:bg-[#415A80]/90 transition-colors"
                   >
                     Close
                   </button>

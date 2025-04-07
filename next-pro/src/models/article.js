@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const articleSchema = new mongoose.Schema(
   {
@@ -47,16 +47,15 @@ const articleSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-// Update the updatedAt field before saving
 articleSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-const Article = mongoose.model("Article", articleSchema);
-
-module.exports = Article;
+export default mongoose.models.Article ||
+  mongoose.model("Article", articleSchema);

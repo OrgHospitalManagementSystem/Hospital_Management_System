@@ -33,21 +33,19 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const getArticles = async () => {
       try {
-        const res = await fetch("/api/articles");
+        const res = await fetch("/api/home");
         const data = await res.json();
-        if (data.success) {
-          setArticles(data.data);
-        }
+        setArticles(data.data);
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error("Failed to fetch articles:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchArticles();
+    getArticles();
   }, []);
 
   const features = [
@@ -212,7 +210,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="py-20 px-10 bg-gradient-to-b from-[#D7E2E9] to-white">
+      <section className="py-20 lg:px-10 bg-gradient-to-b from-[#D7E2E9] to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 rounded-full bg-[#415A80]/10 text-[#415A80] font-medium text-sm mb-4">
@@ -247,7 +245,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 px-10 bg-[#D7E2E9]">
+      <section className="py-20 lg:px-10 bg-[#D7E2E9]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1 rounded-full bg-[#415A80]/10 text-[#415A80] font-medium text-sm mb-4">
@@ -306,7 +304,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 px-10 bg-white">
+      <section className="py-20 lg:px-10 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1 rounded-full bg-[#D7E2E9] text-[#415A80] font-medium text-sm mb-4">

@@ -1,0 +1,8 @@
+export default function Admin() {
+    return (
+      <>
+      <h1>Dashbord</h1>
+      </>
+    );
+  }
+  

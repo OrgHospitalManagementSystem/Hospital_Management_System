@@ -12,6 +12,7 @@ const navLinks = [
   { name: "User Profile", path: "/userProfile" },
   { name: "Admin Dashboard", path: "/adminDashbord" },
   { name: "Payment", path: "/Payment" },
+  { name: "Articles", path: "/articles" },
 ];
 
 export default function Navbar() {

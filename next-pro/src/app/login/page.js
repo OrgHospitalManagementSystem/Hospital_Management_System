@@ -75,6 +75,7 @@ export default function Login() {
               البريد الإلكتروني
             </label>
             <motion.div 
+            
               whileFocus={{ scale: 1.02 }}
               className="relative"
             >

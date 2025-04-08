@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectToDB } from '../../../lib/db';
-import Article from "../../../models/Article";
+import Article from "../../../models/article";
 
 // في الـ GET الخاصة بـ Articles (التي تعرض جميع المقالات)
 export async function GET() {

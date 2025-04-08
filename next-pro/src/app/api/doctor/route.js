@@ -1,22 +1,26 @@
+// pages/api/doctors.js
+import { NextResponse } from "next/server";
+
+import Doctor from '../../../models/Doctor';
 import { connectToDB } from '@/lib/db';
 
-
-export default async function handler(req, res) {
-  if (req.method === 'GET') {
-     await connectToDB();
-    const client = new connectToDB(uri);
+export async function GET() {
+    // Establish MongoDB connection
     try {
-      await client.connect();
-      const database = client.db('your_database_name');
-      const doctorsCollection = database.collection('doctors');
-      const doctors = await doctorsCollection.find({}).toArray();
-      res.status(200).json(doctors);
+      await connectToDB(); // Ensure the connection to the database
+
+      // Fetch all doctor records from the Doctor collection
+      const doctors = await Doctor.find();
+
+      // Return the doctor data as JSON
+    return NextResponse.json({ success: true, data: doctors }, { status: 200 });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch doctors data' });
-    } finally {
-      await client.close();
+      // Catch any errors and send an error response
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error fetching doctors' });
     }
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+  
+    // If the request method is not GET, return a method not allowed response
+    res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-}
+

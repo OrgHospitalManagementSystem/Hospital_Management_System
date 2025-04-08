@@ -1,271 +1,528 @@
-'use client';
+// "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import axios from "axios";
+
+// export default function AddDoctorPage() {
+//   const router = useRouter();
+//   const [loading, setLoading] = useState(false);
+//   const [message, setMessage] = useState({ type: "", text: "" });
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     email: "",
+//     password: "",
+//     specialization: "",
+//     experienceYears: "",
+//     availability: [
+//       { day: "Monday", from: "", to: "" },
+//       { day: "Tuesday", from: "", to: "" },
+//       { day: "Wednesday", from: "", to: "" },
+//       { day: "Thursday", from: "", to: "" },
+//       { day: "Friday", from: "", to: "" },
+//       { day: "Saturday", from: "", to: "" },
+//       { day: "Sunday", from: "", to: "" },
+//     ],
+//     profilePicture: "",
+//     address: "",
+//     birthDate: "",
+//   });
+
+//   const handleChange = (e) => {
+//     const { name, value, type } = e.target;
+//     setFormData({
+//       ...formData,
+//       [name]: type === "number" ? (value ? parseInt(value, 10) : "") : value,
+//     });
+//   };
+
+//   const handleAvailabilityChange = (i, field, value) => {
+//     const copy = [...formData.availability];
+//     copy[i][field] = value;
+//     setFormData({ ...formData, availability: copy });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     setMessage({ type: "", text: "" });
+
+//     // تجهيز البيانات للإرسال
+//     const dataToSubmit = {
+//       ...formData,
+//       experienceYears: formData.experienceYears
+//         ? parseInt(formData.experienceYears, 10)
+//         : 0,
+//       birthDate: formData.birthDate || null,
+//     };
+
+//     try {
+//       // تأكد من أن مسار API صحيح
+//       const response = await axios.post("/api/admin/doctors", dataToSubmit);
+//       setMessage({ type: "success", text: "تم إضافة الطبيب بنجاح" });
+
+//       // انتظر لحظة قبل التوجيه
+//       setTimeout(() => {
+//         router.push("/adminDashboard/doctors");
+//       }, 1000);
+//     } catch (error) {
+//       console.error("Error adding doctor:", error);
+//       let errorMessage = "حدث خطأ أثناء إضافة الطبيب";
+
+//       if (error.response) {
+//         errorMessage = error.response.data.message || errorMessage;
+//       }
+
+//       setMessage({ type: "error", text: errorMessage });
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="p-6 bg-white rounded-lg shadow-md">
+//       <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto">
+//         <h2 className="text-2xl font-bold text-gray-800">إضافة طبيب جديد</h2>
+
+//         {message.text && (
+//           <div
+//             className={`p-4 rounded ${
+//               message.type === "success"
+//                 ? "bg-green-100 text-green-700"
+//                 : "bg-red-100 text-red-700"
+//             }`}
+//           >
+//             {message.text}
+//           </div>
+//         )}
+
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               الاسم الكامل
+//             </label>
+//             <input
+//               name="name"
+//               value={formData.name}
+//               onChange={handleChange}
+//               required
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               البريد الإلكتروني
+//             </label>
+//             <input
+//               name="email"
+//               type="email"
+//               value={formData.email}
+//               onChange={handleChange}
+//               required
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               كلمة المرور
+//             </label>
+//             <input
+//               name="password"
+//               type="password"
+//               value={formData.password}
+//               onChange={handleChange}
+//               required
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               التخصص
+//             </label>
+//             <input
+//               name="specialization"
+//               value={formData.specialization}
+//               onChange={handleChange}
+//               required
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               سنوات الخبرة
+//             </label>
+//             <input
+//               name="experienceYears"
+//               type="number"
+//               min="0"
+//               value={formData.experienceYears}
+//               onChange={handleChange}
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               العنوان
+//             </label>
+//             <input
+//               name="address"
+//               value={formData.address}
+//               onChange={handleChange}
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700">
+//               تاريخ الميلاد
+//             </label>
+//             <input
+//               name="birthDate"
+//               type="date"
+//               value={formData.birthDate}
+//               onChange={handleChange}
+//               className="mt-1 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+//         </div>
+
+//         <div className="mt-6">
+//           <h3 className="text-lg font-semibold text-gray-800">أوقات الدوام</h3>
+//           <div className="mt-2 space-y-3">
+//             {formData.availability.map((slot, i) => (
+//               <div key={i} className="flex flex-wrap items-center gap-3">
+//                 <span className="font-medium text-gray-700 w-24">
+//                   {slot.day}
+//                 </span>
+//                 <div className="flex items-center gap-2">
+//                   <label className="text-sm text-gray-600">من</label>
+//                   <input
+//                     type="time"
+//                     value={slot.from}
+//                     onChange={(e) =>
+//                       handleAvailabilityChange(i, "from", e.target.value)
+//                     }
+//                     className="border border-gray-300 rounded p-1.5 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//                   />
+//                 </div>
+//                 <div className="flex items-center gap-2">
+//                   <label className="text-sm text-gray-600">إلى</label>
+//                   <input
+//                     type="time"
+//                     value={slot.to}
+//                     onChange={(e) =>
+//                       handleAvailabilityChange(i, "to", e.target.value)
+//                     }
+//                     className="border border-gray-300 rounded p-1.5 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+//                   />
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         <div className="flex justify-end pt-5">
+//           <button
+//             type="button"
+//             onClick={() => router.push("/adminDashboard/doctors")}
+//             className="ml-3 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+//           >
+//             إلغاء
+//           </button>
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className={`px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+//               loading ? "opacity-75 cursor-not-allowed" : ""
+//             }`}
+//           >
+//             {loading ? "جاري الإضافة..." : "إضافة الطبيب"}
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// }
+
+
+
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function AddDoctorPage() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    specialization: '',
-    experienceYears: '',
+    name: "",
+    email: "",
+    password: "",
+    specialization: "",
+    experienceYears: "",
     availability: [
-      { day: 'Monday', from: '', to: '' },
-      { day: 'Tuesday', from: '', to: '' },
-      { day: 'Wednesday', from: '', to: '' },
-      { day: 'Thursday', from: '', to: '' },
-      { day: 'Friday', from: '', to: '' },
-      { day: 'Saturday', from: '', to: '' },
-      { day: 'Sunday', from: '', to: '' }
+      { day: "Monday", from: "", to: "" },
+      { day: "Tuesday", from: "", to: "" },
+      { day: "Wednesday", from: "", to: "" },
+      { day: "Thursday", from: "", to: "" },
+      { day: "Friday", from: "", to: "" },
+      { day: "Saturday", from: "", to: "" },
+      { day: "Sunday", from: "", to: "" },
     ],
-    profilePicture: null,
-    address: '',
-    birthDate: ''
+    profilePicture: "",
+    address: "",
+    birthDate: "",
   });
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "number" ? (value ? parseInt(value, 10) : "") : value,
+    });
   };
 
-  const handleAvailabilityChange = (index, field, value) => {
-    const newAvailability = [...formData.availability];
-    newAvailability[index] = { ...newAvailability[index], [field]: value };
-    setFormData({ ...formData, availability: newAvailability });
+  const handleAvailabilityChange = (i, field, value) => {
+    const copy = [...formData.availability];
+    copy[i][field] = value;
+    setFormData({ ...formData, availability: copy });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Validate form data
-    const validationErrors = {};
-    if (!formData.name) validationErrors.name = 'Name is required';
-    if (!formData.email) validationErrors.email = 'Email is required';
-    if (!formData.password) validationErrors.password = 'Password is required';
-    if (!formData.specialization) validationErrors.specialization = 'Specialization is required';
-    
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      setIsSubmitting(false);
-      return;
-    }
+    setLoading(true);
+    setMessage({ type: "", text: "" });
 
-    // In a real application, you would send this data to your API
-    console.log('Submitting doctor data:', formData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      router.push('/adminDashboard/doctors');
-    }, 1000);
+    // Prepare data for submission
+    const dataToSubmit = {
+      ...formData,
+      experienceYears: formData.experienceYears
+        ? parseInt(formData.experienceYears, 10)
+        : 0,
+      birthDate: formData.birthDate || null,
+    };
+
+    try {
+      // Make sure the API path is correct
+      const response = await axios.post("/api/admin/doctors", dataToSubmit);
+      setMessage({ type: "success", text: "Doctor added successfully" });
+
+      // Wait a moment before redirecting
+      setTimeout(() => {
+        router.push("/adminDashboard/doctors");
+      }, 1000);
+    } catch (error) {
+      console.error("Error adding doctor:", error);
+      let errorMessage = "An error occurred while adding the doctor";
+
+      if (error.response) {
+        errorMessage = error.response.data.message || errorMessage;
+      }
+
+      setMessage({ type: "error", text: errorMessage });
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const specializations = [
+    "General Practitioner",
+    "Cardiologist",
+    "Dermatologist",
+    "Neurologist",
+    "Gynecologist",
+    "Pediatrician",
+    "Orthopedic Surgeon",
+    "Psychiatrist",
+    "Ophthalmologist",
+    "ENT Specialist",
+    "Urologist",
+    "Endocrinologist",
+    "Gastroenterologist",
+    "Oncologist",
+    "Radiologist",
+  ];
+
   return (
-    <div>
-      <div className="pb-5 border-b border-gray-200 mb-5 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Add New Doctor</h1>
-        <Link 
-          href="/adminDashboard/doctors" 
-          className="text-primary hover:text-primary-dark"
-        >
-          Back to Doctors
-        </Link>
-      </div>
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold text-[#415A80] mb-6">Add New Doctor</h2>
 
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Basic Information */}
-            <div className="col-span-1 md:col-span-2">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Basic Information</h2>
-            </div>
-            
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md ${errors.name ? 'border-red-500' : ''}`}
-                />
-                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <div className="mt-1">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md ${errors.email ? 'border-red-500' : ''}`}
-                />
-                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md ${errors.password ? 'border-red-500' : ''}`}
-                />
-                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="birthDate" className="block text-sm font-medium text-gray-700">
-                Date of Birth
-              </label>
-              <div className="mt-1">
-                <input
-                  type="date"
-                  name="birthDate"
-                  id="birthDate"
-                  value={formData.birthDate}
-                  onChange={handleChange}
-                  className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                Address
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="address"
-                  id="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-
-            {/* Professional Information */}
-            <div className="col-span-1 md:col-span-2 mt-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Professional Information</h2>
-            </div>
-
-            <div>
-              <label htmlFor="specialization" className="block text-sm font-medium text-gray-700">
-                Specialization
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="specialization"
-                  id="specialization"
-                  value={formData.specialization}
-                  onChange={handleChange}
-                  className={`shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md ${errors.specialization ? 'border-red-500' : ''}`}
-                />
-                {errors.specialization && <p className="mt-1 text-sm text-red-600">{errors.specialization}</p>}
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="experienceYears" className="block text-sm font-medium text-gray-700">
-                Years of Experience
-              </label>
-              <div className="mt-1">
-                <input
-                  type="number"
-                  name="experienceYears"
-                  id="experienceYears"
-                  min="0"
-                  value={formData.experienceYears}
-                  onChange={handleChange}
-                  className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-
-            {/* Availability Schedule */}
-            <div className="col-span-1 md:col-span-2 mt-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Availability Schedule</h2>
-              
-              <div className="space-y-4">
-                {formData.availability.map((daySchedule, index) => (
-                  <div key={daySchedule.day} className="grid grid-cols-3 gap-4 items-center">
-                    <div className="col-span-1">
-                      <p className="text-sm font-medium text-gray-700">{daySchedule.day}</p>
-                    </div>
-                    <div className="col-span-1">
-                      <label htmlFor={`from-${index}`} className="sr-only">From</label>
-                      <input
-                        type="time"
-                        id={`from-${index}`}
-                        value={daySchedule.from}
-                        onChange={(e) => handleAvailabilityChange(index, 'from', e.target.value)}
-                        className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="col-span-1">
-                      <label htmlFor={`to-${index}`} className="sr-only">To</label>
-                      <input
-                        type="time"
-                        id={`to-${index}`}
-                        value={daySchedule.to}
-                        onChange={(e) => handleAvailabilityChange(index, 'to', e.target.value)}
-                        className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="col-span-1 md:col-span-2 mt-8">
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => router.push('/adminDashboard/doctors')}
-                  className="mr-3 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                >
-                  {isSubmitting ? 'Saving...' : 'Add Doctor'}
-                </button>
-              </div>
-            </div>
+        {message.text && (
+          <div
+            className={`p-4 rounded ${
+              message.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {message.text}
           </div>
-        </form>
-      </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Specialization
+            </label>
+            <select
+              name="specialization"
+              value={formData.specialization}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            >
+              <option value="">Select Specialization</option>
+              {specializations.map((spec) => (
+                <option key={spec} value={spec}>
+                  {spec}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Years of Experience
+            </label>
+            <input
+              name="experienceYears"
+              type="number"
+              min="0"
+              value={formData.experienceYears}
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <input
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Date of Birth
+            </label>
+            <input
+              name="birthDate"
+              type="date"
+              value={formData.birthDate}
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-[#E5E7E9] rounded-md shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+            />
+          </div>
+        </div>
+
+        <div className="mt-6 bg-[#F8FAFC] p-4 rounded-lg border border-[#E5E7E9]">
+          <h3 className="text-lg font-semibold text-[#415A80] mb-3">Availability Schedule</h3>
+          <div className="mt-2 space-y-3">
+            {formData.availability.map((slot, i) => (
+              <div key={i} className="flex flex-wrap items-center gap-3 p-2 hover:bg-[#D7E2E9] rounded-md transition-colors duration-200">
+                <span className="font-medium text-[#415A80] w-24">
+                  {slot.day}
+                </span>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm text-gray-600">From</label>
+                  <input
+                    type="time"
+                    value={slot.from}
+                    onChange={(e) =>
+                      handleAvailabilityChange(i, "from", e.target.value)
+                    }
+                    className="border border-[#E5E7E9] rounded p-1.5 shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm text-gray-600">To</label>
+                  <input
+                    type="time"
+                    value={slot.to}
+                    onChange={(e) =>
+                      handleAvailabilityChange(i, "to", e.target.value)
+                    }
+                    className="border border-[#E5E7E9] rounded p-1.5 shadow-sm focus:ring-[#415A80] focus:border-[#415A80]"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-5 border-t border-[#E5E7E9] mt-6">
+          <button
+            type="button"
+            onClick={() => router.push("/adminDashboard/doctors")}
+            className="mr-3 px-4 py-2 text-sm font-medium text-[#415A80] bg-white border border-[#E5E7E9] rounded-lg shadow-sm hover:bg-[#D7E2E9] transition duration-200 focus:outline-none"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`px-4 py-2 text-sm font-medium text-white bg-[#415A80] border border-transparent rounded-lg shadow-sm hover:bg-[#334766] transition duration-200 focus:outline-none ${
+              loading ? "opacity-75 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? "Adding..." : "Add Doctor"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

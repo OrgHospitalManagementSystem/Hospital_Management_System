@@ -1,81 +1,196 @@
-// src/app/api/admin/doctors/[id]/route.js
+import { connectToDB } from '@/lib/db';
+import Doctor from '@/models/Doctor';
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
-import User from '@/models/User';
-import DoctorProfile from '@/models/DoctorProfile';
 
-export async function GET(request, { params }) {
+// وظيفة مساعدة للتحقق من صحة المعرف
+function isValidObjectId(id) {
+  return id && /^[0-9a-fA-F]{24}$/.test(id);
+}
+
+// وظيفة لتسجيل الأخطاء بتنسيق منظم
+function logError(method, error, id) {
+  console.error(`[API] [${method}] [Doctor ID: ${id || 'N/A'}] Error:`, error.message);
+  console.error(error.stack);
+}
+
+// GET - الحصول على طبيب محدد بالمعرف
+export async function GET(req, { params }) {
+  console.log(`[API] GET request for doctor ID: ${params.id}`);
+  
   try {
-    await connectDB();
-    const { id } = params;
-    
-    const doctor = await User.findById(id)
-      .populate('doctorProfile');
-    
-    if (!doctor) {
-      return NextResponse.json({ error: 'Doctor not found' }, { status: 404 });
+    // التحقق من صحة المعرف
+    if (!isValidObjectId(params.id)) {
+      return NextResponse.json(
+        { message: 'معرف الطبيب غير صحيح' },
+        { status: 400 }
+      );
     }
     
+    // الاتصال بقاعدة البيانات
+    await connectToDB();
+    console.log(`[API] Connected to database, searching for doctor ID: ${params.id}`);
+    
+    // البحث عن الطبيب
+    const doctor = await Doctor.findById(params.id);
+    
+    // التحقق من وجود الطبيب
+    if (!doctor) {
+      console.log(`[API] Doctor with ID ${params.id} not found`);
+      return NextResponse.json(
+        { message: 'لم يتم العثور على الطبيب' },
+        { status: 404 }
+      );
+    }
+    
+    console.log(`[API] Successfully retrieved doctor: ${doctor.name}`);
+    
+    // إرجاع بيانات الطبيب
     return NextResponse.json(doctor);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    logError('GET', error, params.id);
+    return NextResponse.json(
+      { 
+        message: 'حدث خطأ أثناء استرجاع بيانات الطبيب', 
+        error: error.message 
+      },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(request, { params }) {
+// PUT - تحديث بيانات طبيب محدد
+export async function PUT(req, { params }) {
+  console.log(`[API] PUT request for doctor ID: ${params.id}`);
+  
   try {
-    await connectDB();
-    const { id } = params;
-    const data = await request.json();
-    
-    // Update user data
-    const user = await User.findById(id);
-    if (!user) {
-      return NextResponse.json({ error: 'Doctor not found' }, { status: 404 });
+    // التحقق من صحة المعرف
+    if (!isValidObjectId(params.id)) {
+      return NextResponse.json(
+        { message: 'معرف الطبيب غير صحيح' },
+        { status: 400 }
+      );
     }
     
-    // Update basic user info
-    user.name = data.name || user.name;
-    user.email = data.email || user.email;
-    if (data.password) user.password = data.password; // should be hashed
-    user.address = data.address || user.address;
-    user.birthDate = data.birthDate || user.birthDate;
-    user.profilePicture = data.profilePicture || user.profilePicture;
+    // الاتصال بقاعدة البيانات
+    await connectToDB();
     
-    await user.save();
+    // التحقق من وجود الطبيب قبل التحديث
+    const doctorExists = await Doctor.findById(params.id);
     
-    // Update doctor profile
-    const doctorProfile = await DoctorProfile.findOne({ user: id });
-    if (doctorProfile) {
-      doctorProfile.specialization = data.specialization || doctorProfile.specialization;
-      doctorProfile.experienceYears = data.experienceYears || doctorProfile.experienceYears;
-      if (data.availability) doctorProfile.availability = data.availability;
+    if (!doctorExists) {
+      return NextResponse.json(
+        { message: 'لم يتم العثور على الطبيب' },
+        { status: 404 }
+      );
+    }
+    
+    // الحصول على البيانات المرسلة
+    const data = await req.json();
+    console.log(`[API] Received update data for doctor: ${doctorExists.name}`);
+    
+    // معالجة حقل سنوات الخبرة
+    if (data.experienceYears !== undefined) {
+      data.experienceYears = parseInt(data.experienceYears, 10) || 0;
+    }
+    
+    // معالجة حقل التاريخ
+    if (data.birthDate === '') {
+      data.birthDate = null;
+    }
+    
+    // التحقق من البريد الإلكتروني إذا تم تغييره
+    if (data.email && data.email !== doctorExists.email) {
+      const emailExists = await Doctor.findOne({ 
+        email: data.email,
+        _id: { $ne: params.id } // استبعاد الطبيب الحالي من البحث
+      });
       
-      await doctorProfile.save();
+      if (emailExists) {
+        return NextResponse.json(
+          { message: 'البريد الإلكتروني مستخدم بالفعل' },
+          { status: 400 }
+        );
+      }
     }
     
-    return NextResponse.json({ user, doctorProfile });
+    // تحديث بيانات الطبيب
+    const updated = await Doctor.findByIdAndUpdate(
+      params.id,
+      data,
+      { new: true, runValidators: true }
+    );
+    
+    console.log(`[API] Doctor updated successfully: ${updated.name}`);
+    
+    // إرجاع البيانات المحدثة
+    return NextResponse.json(updated);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    logError('PUT', error, params.id);
+    return NextResponse.json(
+      { 
+        message: 'حدث خطأ أثناء تحديث بيانات الطبيب', 
+        error: error.message 
+      },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(request, { params }) {
+// DELETE - حذف طبيب محدد
+export async function DELETE(req, { params }) {
+  console.log(`[API] DELETE request for doctor ID: ${params.id}`);
+  
   try {
-    await connectDB();
-    const { id } = params;
-    
-    // Find and delete user
-    const user = await User.findByIdAndDelete(id);
-    if (!user) {
-      return NextResponse.json({ error: 'Doctor not found' }, { status: 404 });
+    // التحقق من صحة المعرف
+    if (!isValidObjectId(params.id)) {
+      return NextResponse.json(
+        { message: 'معرف الطبيب غير صحيح' },
+        { status: 400 }
+      );
     }
     
-    // Delete doctor profile
-    await DoctorProfile.findOneAndDelete({ user: id });
+    // الاتصال بقاعدة البيانات
+    await connectToDB();
     
-    return NextResponse.json({ message: 'Doctor deleted successfully' });
+    // التحقق من وجود الطبيب قبل الحذف
+    const doctor = await Doctor.findById(params.id);
+    
+    if (!doctor) {
+      return NextResponse.json(
+        { message: 'لم يتم العثور على الطبيب' },
+        { status: 404 }
+      );
+    }
+    
+    console.log(`[API] Deleting doctor: ${doctor.name}`);
+    
+    // حذف الطبيب
+    await Doctor.findByIdAndDelete(params.id);
+    
+    console.log(`[API] Doctor deleted successfully`);
+    
+    // إرجاع استجابة ناجحة بدون محتوى
+    return new NextResponse(null, { status: 204 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    logError('DELETE', error, params.id);
+    return NextResponse.json(
+      { 
+        message: 'حدث خطأ أثناء حذف الطبيب', 
+        error: error.message 
+      },
+      { status: 500 }
+    );
   }
+}
+
+// لدعم طلبات CORS OPTIONS
+export async function OPTIONS(req) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Methods': 'GET, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
 }

@@ -35,10 +35,10 @@ export default function doctorDashboard() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <SidebarDoctor />
+    <div className='bg-[#D7E2E9] bg-opacity-20'>
+      {/* <SidebarDoctor /> */}
       
-      <div className="flex-1 ml-64"> {/* ml-64 to account for sidebar width */}
+      <div className="flex-1 ml"> {/* ml-64 to account for sidebar width */}
         {/* Header */}
         <header className="bg-white shadow-sm px-6 py-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-800">Patient Records Dashboard</h1>

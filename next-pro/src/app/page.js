@@ -26,6 +26,7 @@ import {
   Clock,
   X,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -407,10 +408,12 @@ export default function Home() {
 
           {/* View More Button */}
           <div className="mt-12 text-center">
-            <button className="px-8 py-3 bg-[#D7E2E9] hover:cursor-pointer text-[#415A80] rounded-lg font-medium border border-[#415A80]/10 hover:bg-[#415A80] hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto">
-              View All Articles
-              <ArrowRight size={16} />
-            </button>
+            <Link href={"/articles"}>
+              <button className="px-8 py-3 bg-[#D7E2E9] hover:cursor-pointer text-[#415A80] rounded-lg font-medium border border-[#415A80]/10 hover:bg-[#415A80] hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto">
+                View All Articles
+                <ArrowRight size={16} />
+              </button>
+            </Link>
           </div>
         </div>
 

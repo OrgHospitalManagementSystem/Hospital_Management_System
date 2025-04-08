@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Shield,
   FileText,
@@ -26,8 +26,28 @@ import {
   Clock,
   X,
 } from "lucide-react";
+import Link from "next/link";
+
 export default function Home() {
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getArticles = async () => {
+      try {
+        const res = await fetch("/api/home");
+        const data = await res.json();
+        setArticles(data.data);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getArticles();
+  }, []);
 
   const features = [
     {
@@ -134,53 +154,6 @@ export default function Home() {
     },
   ];
 
-  const articles = [
-    {
-      category: "Dental Health",
-      title: "5 Effective Ways to Maintain Healthy Teeth",
-      summary:
-        "Discover the best daily practices for dental care and how to prevent common dental problems through simple routines",
-      readTime: "5 min read",
-      image:
-        "https://i.pinimg.com/474x/6d/b0/12/6db012da6c2f885c3e67e6b69778fb4d.jpg",
-      fullContent:
-        "Maintaining healthy teeth is essential for overall wellbeing. Here are five effective ways to keep your teeth in optimal condition:\n\n1. **Brush properly twice a day** - Use fluoride toothpaste and a soft-bristled brush. Brush for two minutes, ensuring you reach all surfaces of your teeth.\n\n2. **Floss daily** - Flossing removes food particles and plaque from areas your toothbrush can't reach.\n\n3. **Limit sugary foods and drinks** - Sugar contributes to tooth decay by feeding harmful bacteria in your mouth.\n\n4. **Visit your dentist regularly** - Professional cleanings and check-ups every six months help catch problems early.\n\n5. **Use mouthwash** - Antibacterial mouthwash reduces acid in the mouth and cleans hard-to-brush areas.\n\nBy following these simple practices, you can significantly reduce your risk of cavities, gum disease, and other dental problems.",
-    },
-    {
-      category: "Teeth Whitening",
-      title: "Beverages That Cause Tooth Discoloration",
-      summary:
-        "A comprehensive guide on how different drinks affect your teeth color and ways to maintain a bright, white smile",
-      readTime: "7 min read",
-      image:
-        "https://i.pinimg.com/474x/fb/9f/b6/fb9fb6c1d5b20a13f8c69d7398ce6783.jpg",
-      fullContent:
-        "Many favorite beverages can stain teeth over time. Understanding which drinks pose the greatest risk can help maintain a whiter smile.\n\n**Major Staining Culprits:**\n\n- **Coffee** - Contains tannins that cause color compounds to stick to teeth.\n- **Tea** - Particularly black tea, which has higher tannin content than coffee.\n- **Red Wine** - Contains chromogens, tannins, and acid that all contribute to staining.\n- **Cola** - Dark sodas contain chromogens and acids that damage enamel.\n- **Sports Drinks** - High acidity wears away enamel, making teeth more susceptible to staining.\n\n**Prevention Tips:**\n\n- Use a straw when drinking staining beverages\n- Rinse mouth with water after consumption\n- Wait 30 minutes before brushing (acidic drinks soften enamel)\n- Consider professional whitening treatments for existing stains\n\nModeration is key - you don't need to eliminate these beverages completely, but being mindful of consumption habits can help maintain a brighter smile.",
-    },
-    {
-      category: "Nutrition",
-      title: "Foods That Promote Healthy Teeth and Gums",
-      summary:
-        "List of the best foods that enhance your dental health and protect against decay and inflammation",
-      readTime: "6 min read",
-      image:
-        "https://i.pinimg.com/474x/4a/84/bb/4a84bb80b019be225d09c0521187e4f2.jpg",
-      fullContent:
-        "Your diet plays a crucial role in dental health. These foods can help strengthen teeth and prevent dental problems:\n\n**Calcium-Rich Foods:**\n- Cheese, yogurt, and milk help neutralize acids and rebuild tooth enamel\n- Almonds and leafy greens provide calcium without added sugars\n\n**Crunchy Fruits and Vegetables:**\n- Apples, carrots, and celery act as natural toothbrushes\n- Their crisp texture helps clean teeth and massage gums\n- High water content stimulates saliva production\n\n**Vitamin C Foods:**\n- Citrus fruits, strawberries, and bell peppers strengthen blood vessels and connective tissue\n- Vitamin C is essential for gum health and preventing gingivitis\n\n**Phosphorus-Rich Foods:**\n- Eggs, fish, and lean meats contain phosphorus that works with calcium to rebuild tooth enamel\n\n**Green and Black Teas:**\n- Contain polyphenols that reduce bacteria and prevent plaque formation\n\nIncorporating these foods into your regular diet can significantly improve your oral health while benefiting your overall wellbeing.",
-    },
-    {
-      category: "Orthodontics",
-      title: "Everything You Need to Know About Modern Braces",
-      summary:
-        "Compare different types of dental braces and the advantages and disadvantages of each option",
-      readTime: "8 min read",
-      image:
-        "https://i.pinimg.com/474x/b8/6d/d9/b86dd9a3ed7acb84a3c603fd0585da70.jpg",
-      fullContent:
-        "Modern orthodontics offers several options beyond traditional metal braces. Here's a comparison of the most common types:\n\n**Traditional Metal Braces:**\n- Most affordable option\n- Highly effective for complex issues\n- Most visible option\n- Average treatment time: 18-24 months\n\n**Ceramic Braces:**\n- Clear or tooth-colored brackets\n- Less visible than metal braces\n- Slightly more expensive\n- Can stain if not properly maintained\n- Average treatment time: 18-24 months\n\n**Lingual Braces:**\n- Attached to the back of teeth, completely hidden\n- Significantly more expensive\n- May affect speech initially\n- More difficult to clean\n- Average treatment time: 18-36 months\n\n**Clear Aligners (e.g., Invisalign):**\n- Nearly invisible removable trays\n- Can be removed for eating and cleaning\n- Requires strict compliance (20-22 hours daily wear)\n- Best for mild to moderate alignment issues\n- Average treatment time: 12-18 months\n\nThe best option depends on the complexity of your case, budget considerations, aesthetic preferences, and lifestyle factors. Consult with an orthodontist to determine which solution is right for you.",
-    },
-  ];
-
   const featuredArticle = {
     title: "Dental Implants: Process, Benefits, and Aftercare",
     summary:
@@ -238,7 +211,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="py-20 bg-gradient-to-b from-[#D7E2E9] to-white">
+      <section className="py-20 lg:px-10 bg-gradient-to-b from-[#D7E2E9] to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1 rounded-full bg-[#415A80]/10 text-[#415A80] font-medium text-sm mb-4">
@@ -273,7 +246,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#D7E2E9]">
+      <section className="py-20 lg:px-10 bg-[#D7E2E9]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1 rounded-full bg-[#415A80]/10 text-[#415A80] font-medium text-sm mb-4">
@@ -332,7 +305,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-20 lg:px-10 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1 rounded-full bg-[#D7E2E9] text-[#415A80] font-medium text-sm mb-4">
@@ -435,87 +408,123 @@ export default function Home() {
 
           {/* View More Button */}
           <div className="mt-12 text-center">
-            <button className="px-8 py-3 bg-[#D7E2E9] hover:cursor-pointer text-[#415A80] rounded-lg font-medium border border-[#415A80]/10 hover:bg-[#415A80] hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto">
-              View All Articles
-              <ArrowRight size={16} />
-            </button>
+            <Link href={"/articles"}>
+              <button className="px-8 py-3 bg-[#D7E2E9] hover:cursor-pointer text-[#415A80] rounded-lg font-medium border border-[#415A80]/10 hover:bg-[#415A80] hover:text-white transition-all duration-300 flex items-center gap-2 mx-auto">
+                View All Articles
+                <ArrowRight size={16} />
+              </button>
+            </Link>
           </div>
         </div>
 
         {/* Article Popup Modal */}
-        {selectedArticle && (
-          <div className="fixed inset-0 bg-[#00000053] bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white my-10 rounded-xl max-w-3xl w-full max-h-full overflow-y-auto">
-              <div className="relative">
-                <img
-                  src={selectedArticle.image}
-                  alt={selectedArticle.title}
-                  className="w-full h-64 object-cover"
-                />
-                <button
-                  onClick={closePopup}
-                  className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-              <div className="p-6 md:p-8">
-                <div className="flex items-center mb-3">
-                  {selectedArticle.category && (
-                    <span className="text-[#A5D4DC] text-sm font-medium">
-                      {selectedArticle.category}
-                    </span>
-                  )}
-                  {selectedArticle.tags && selectedArticle.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 ml-auto">
-                      {selectedArticle.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-[#D7E2E9] px-3 py-1 rounded-full text-sm text-[#30486c]"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <h3 className="text-2xl font-bold text-[#415A80] mb-4">
-                  {selectedArticle.title}
-                </h3>
-
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-gray-500 text-sm flex items-center">
-                    <Clock size={16} className="mr-1" />
-                    {selectedArticle.readTime}
-                  </span>
-                  {selectedArticle === featuredArticle && (
-                    <span className="text-gray-500 text-sm flex items-center">
-                      <Calendar size={16} className="mr-1" />
-                      Published: April 5, 2025
-                    </span>
-                  )}
-                </div>
-
-                <div className="prose prose-blue max-w-none">
-                  {selectedArticle.fullContent
-                    .split("\n\n")
-                    .map((paragraph, idx) => (
-                      <p key={idx}>{paragraph}</p>
-                    ))}
-                </div>
-
-                <div className="mt-8 pt-4 border-t border-gray-200">
-                  <button
-                    onClick={closePopup}
-                    className="w-full py-3 bg-[#415A80] text-white rounded-lg font-medium hover:bg-[#415A80]/90 transition-colors"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex flex-row gap-2">
+            <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]" />
+            <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]" />
+            <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]" />
           </div>
+        ) : articles.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+            <div className="animate-pulse">
+              <svg
+                className="mx-auto h-24 w-24 text-gray-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1"
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h1 className="mt-6 text-2xl font-extrabold text-gray-700">
+              No articles yet
+            </h1>
+          </div>
+        ) : (
+          <>
+            {/* محتوى المقالات العادي هنا */}
+
+            {selectedArticle && (
+              <div className="fixed inset-0 bg-[#00000053] bg-opacity-50 z-50 flex items-center justify-center p-4">
+                <div className="bg-white my-10 rounded-xl max-w-3xl w-full max-h-full overflow-y-auto">
+                  <div className="relative">
+                    <img
+                      src={selectedArticle.image}
+                      alt={selectedArticle.title}
+                      className="w-full h-64 object-cover"
+                    />
+                    <button
+                      onClick={closePopup}
+                      className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                  <div className="p-6 md:p-8">
+                    <div className="flex items-center mb-3">
+                      {selectedArticle.category && (
+                        <span className="text-[#A5D4DC] text-sm font-medium">
+                          {selectedArticle.category}
+                        </span>
+                      )}
+                      {selectedArticle.tags &&
+                        selectedArticle.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 ml-auto">
+                            {selectedArticle.tags.map((tag, idx) => (
+                              <span
+                                key={idx}
+                                className="bg-[#D7E2E9] px-3 py-1 rounded-full text-sm text-[#30486c]"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                    </div>
+
+                    <h3 className="text-2xl font-bold text-[#415A80] mb-4">
+                      {selectedArticle.title}
+                    </h3>
+
+                    <div className="flex items-center justify-between mb-6">
+                      <span className="text-gray-500 text-sm flex items-center">
+                        <Clock size={16} className="mr-1" />
+                        {selectedArticle.readTime}
+                      </span>
+                      {selectedArticle === featuredArticle && (
+                        <span className="text-gray-500 text-sm flex items-center">
+                          <Calendar size={16} className="mr-1" />
+                          Published: April 5, 2025
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="prose prose-blue max-w-none">
+                      {selectedArticle.fullContent
+                        .split("\n\n")
+                        .map((paragraph, idx) => (
+                          <p key={idx}>{paragraph}</p>
+                        ))}
+                    </div>
+
+                    <div className="mt-8 pt-4 border-t border-gray-200">
+                      <button
+                        onClick={closePopup}
+                        className="w-full py-3 bg-[#415A80] text-white rounded-lg font-medium hover:bg-[#415A80]/90 transition-colors"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </section>
     </main>

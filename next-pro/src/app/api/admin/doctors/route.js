@@ -1,60 +1,164 @@
-// src/app/api/admin/doctors/route.js
-import { NextResponse } from 'next/server';
-import connectDB from '@/lib/db';
-import User from '@/models/User';
-import DoctorProfile from '@/models/DoctorProfile';
+import { connectToDB } from "@/lib/db";
+import Doctor from "@/models/Doctor";
+import User from "@/models/User";
+import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs"; // تأكد من تثبيته: npm install bcryptjs
 
-export async function GET(request) {
+// وظيفة لتسجيل الأخطاء بتنسيق منظم
+function logError(method, error) {
+  console.error(`[API] [${method}] Error:`, error.message);
+  console.error(error.stack);
+}
+
+// GET - الحصول على قائمة الأطباء
+export async function GET(req) {
+  console.log("[API] GET request for doctors list");
+
   try {
-    await connectDB();
-    
-    // Get doctors with their profiles
-    const doctors = await User.find({ role: 'doctor' })
-      .populate('doctorProfile');
-    
-    return NextResponse.json(doctors);
+    // الاتصال بقاعدة البيانات
+    await connectToDB();
+    console.log("[API] Connected to database, fetching doctors");
+
+    // إضافة دعم للتصفية والبحث والترتيب
+    const { searchParams } = new URL(req.url);
+    const query = {};
+
+    const nameSearch = searchParams.get("name");
+    const specializationSearch = searchParams.get("specialization");
+    if (nameSearch) query.name = { $regex: nameSearch, $options: "i" };
+    if (specializationSearch)
+      query.specialization = { $regex: specializationSearch, $options: "i" };
+
+    const sortField = searchParams.get("sortBy") || "name";
+    const sortOrder = searchParams.get("sortOrder") === "desc" ? -1 : 1;
+    const sortOptions = {};
+    sortOptions[sortField] = sortOrder;
+
+    const limit = parseInt(searchParams.get("limit") || "50", 10);
+    const skip = parseInt(searchParams.get("skip") || "0", 10);
+
+    const doctors = await Doctor.find(query)
+      .select("name email specialization experienceYears")
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Doctor.countDocuments(query);
+
+    console.log(`[API] Successfully retrieved ${doctors.length} doctors`);
+
+    return NextResponse.json({
+      doctors,
+      pagination: {
+        total,
+        limit,
+        skip,
+        hasMore: skip + doctors.length < total,
+      },
+    });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    logError("GET", error);
+    return NextResponse.json(
+      {
+        message: "حدث خطأ أثناء استرجاع قائمة الأطباء",
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
 }
 
-export async function POST(request) {
+// POST - إضافة طبيب جديد + إنشاء حساب مستخدم له
+export async function POST(req) {
+  console.log("[API] POST request to create new doctor");
+
   try {
-    await connectDB();
-    const data = await request.json();
-    
-    // Create user with doctor role
-    const user = new User({
-      name: data.name,
-      email: data.email,
-      password: data.password, // should be hashed in a real app
-      role: 'doctor',
-      image: data.image || '',
-      profilePicture: data.profilePicture || '',
-      address: data.address || '',
-      birthDate: data.birthDate || null,
-      IsConfirmed: true, // admin-created accounts are auto-confirmed
-      registrationDate: new Date()
+    await connectToDB();
+
+    const body = await req.json();
+    console.log(`[API] Received data for new doctor: ${body.name}`);
+
+    // التحقق من الحقول الأساسية
+    if (!body.name || !body.email || !body.password) {
+      return NextResponse.json(
+        { message: "يجب توفير الاسم والبريد الإلكتروني وكلمة المرور" },
+        { status: 400 }
+      );
+    }
+
+    // التحقق من تكرار البريد الإلكتروني في Doctor أو User
+    const doctorExists = await Doctor.findOne({ email: body.email });
+    const userExists = await User.findOne({ email: body.email });
+
+    if (doctorExists || userExists) {
+      return NextResponse.json(
+        { message: "البريد الإلكتروني مستخدم بالفعل" },
+        { status: 400 }
+      );
+    }
+
+    // تجهيز البيانات
+    const experienceYears = parseInt(body.experienceYears, 10) || 0;
+    const birthDate = body.birthDate || null;
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+
+    // إنشاء الطبيب
+    const doctor = await Doctor.create({
+      ...body,
+      experienceYears,
+      birthDate,
+      password: hashedPassword,
     });
-    
-    await user.save();
-    
-    // Create doctor profile
-    const doctorProfile = new DoctorProfile({
-      user: user._id,
-      specialization: data.specialization,
-      experienceYears: data.experienceYears,
-      availability: data.availability || []
+
+    // إنشاء المستخدم المرتبط
+    const user = await User.create({
+      name: doctor.name,
+      email: doctor.email,
+      password: hashedPassword,
+      role: "doctor",
+      profilePicture: doctor.profilePicture,
+      address: doctor.address,
+      birthDate: doctor.birthDate,
+      IsConfirmed: true,
     });
-    
-    await doctorProfile.save();
-    
-    // Link profile to user
-    user.doctorProfile = doctorProfile._id;
-    await user.save();
-    
-    return NextResponse.json({ user, doctorProfile });
+
+    console.log(`[API] Successfully created doctor and user: ${doctor.email}`);
+
+    return NextResponse.json({ doctor, user }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    logError("POST", error);
+
+    if (error.name === "ValidationError") {
+      const validationErrors = Object.values(error.errors).map(
+        (err) => err.message
+      );
+      return NextResponse.json(
+        {
+          message: "خطأ في التحقق من صحة البيانات",
+          errors: validationErrors,
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        message: "حدث خطأ أثناء إضافة الطبيب",
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
+}
+
+// لدعم طلبات CORS OPTIONS
+export async function OPTIONS(req) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Max-Age": "86400",
+    },
+  });
 }

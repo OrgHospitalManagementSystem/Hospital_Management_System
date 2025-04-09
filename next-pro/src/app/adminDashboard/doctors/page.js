@@ -216,7 +216,7 @@ export default function DoctorsPage() {
     if (!confirm('Are you sure you want to delete this doctor?')) return;
 
     try {
-      await axios.delete(`/api/doctors/${id}`);
+      await axios.delete(`/api/admin/doctors/${id}`);
       setDoctors(doctors.filter((doc) => doc._id !== id));
       alert('Doctor deleted successfully');
     } catch (error) {

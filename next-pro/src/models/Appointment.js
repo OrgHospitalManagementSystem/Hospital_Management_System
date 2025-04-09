@@ -1,3 +1,4 @@
+// models/Appointment.js
 import mongoose from 'mongoose';
 
 const appointmentSchema = new mongoose.Schema({
@@ -5,7 +6,11 @@ const appointmentSchema = new mongoose.Schema({
   doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   date: Date,
   time: String,
-  status: { type: String, enum: ['pending', 'approved', 'cancelled', 'completed'], default: 'pending' },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'cancelled', 'completed'],
+    default: 'pending'
+  },
   reason: String,
 }, { timestamps: true });
 

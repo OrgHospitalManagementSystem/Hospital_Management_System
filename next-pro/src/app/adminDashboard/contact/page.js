@@ -1,68 +1,35 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast, Toaster } from 'react-hot-toast';
 
 export default function ContactMessagesPage() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
 
   useEffect(() => {
-    // In a real application, fetch messages from API
-    // For now, use dummy data
-    const dummyMessages = [
-      {
-        id: '1',
-        name: 'John Anderson',
-        email: 'john.anderson@example.com',
-        message: 'Hello, I would like to inquire about your dental implant procedures. Can you please provide more information about the process, cost, and recovery time?',
-        timestamp: '2025-04-07T14:30:00',
-        replied: false
-      },
-      {
-        id: '2',
-        name: 'Sarah Thompson',
-        email: 'sarah.thompson@example.com',
-        message: 'I need to reschedule my appointment that was set for April 15th. Is it possible to move it to the following week? Thank you for your assistance.',
-        timestamp: '2025-04-06T09:15:00',
-        replied: true
-      },
-      {
-        id: '3',
-        name: 'Michael Wilson',
-        email: 'michael.wilson@example.com',
-        message: 'Can you tell me if Dr. Smith is accepting new patients? I have been recommended to see him specifically for my heart condition.',
-        timestamp: '2025-04-05T16:45:00',
-        replied: false
-      },
-      {
-        id: '4',
-        name: 'Emily Davis',
-        email: 'emily.davis@example.com',
-        message: 'I recently visited your clinic and I wanted to express my appreciation for the excellent care I received from Dr. Johnson and his team. The entire experience was very positive.',
-        timestamp: '2025-04-04T11:20:00',
-        replied: true
-      },
-      {
-        id: '5',
-        name: 'Robert Brown',
-        email: 'robert.brown@example.com',
-        message: 'I would like to know if you offer any payment plans for major procedures? I need some extensive dental work but would like to spread the payments over time.',
-        timestamp: '2025-04-03T13:50:00',
-        replied: false
-      }
-    ];
-
-    setMessages(dummyMessages);
-    setLoading(false);
+    fetchMessages();
   }, []);
 
-  const filteredMessages = filter === 'all' 
-    ? messages 
-    : messages.filter(message => 
-        filter === 'replied' ? message.replied : !message.replied
-      );
+  const fetchMessages = async () => {
+    try {
+      const res = await axios.get('/api/admin/contact-messages');
+      setMessages(res.data);
+    } catch (error) {
+      toast.error('Failed to load messages');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredMessages = filter === 'all'
+    ? messages
+    : messages.filter(msg => (filter === 'replied' ? msg.replied : !msg.replied));
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -75,76 +42,100 @@ export default function ContactMessagesPage() {
     }).format(date);
   };
 
-  const handleMarkAsReplied = (id) => {
-    setMessages(messages.map(message => 
-      message.id === id ? { ...message, replied: true } : message
-    ));
-    setSelectedMessage(null);
+  const handleSendReply = async () => {
+    if (!replyText.trim()) {
+      toast.error('Please write a reply before sending');
+      return;
+    }
+
+    setSendingReply(true);
+
+    try {
+      await axios.put(`/api/admin/contact-messages/${selectedMessage._id}`, {
+        replied: true,
+        replyText: replyText.trim()
+      });
+
+      toast.success('Reply sent successfully via email!');
+      setReplyText('');
+      setSelectedMessage(null);
+      fetchMessages();
+    } catch (error) {
+      toast.error('An error occurred while sending the reply');
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this message?')) return;
+
+    try {
+      await axios.delete(`/api/admin/contact-messages/${id}`);
+      toast.success('Message deleted successfully');
+      fetchMessages();
+      setSelectedMessage(null);
+    } catch (error) {
+      toast.error('An error occurred while deleting');
+    }
   };
 
   return (
-    <div>
-      <div className="pb-5 border-b border-gray-200 mb-5">
-        <h1 className="text-2xl font-bold text-gray-900">Contact Messages</h1>
+    <div className="max-w-7xl mx-auto">
+      <Toaster position="top-center" />
+      
+      <div className="pb-5 border-b border-[#D7E2E9] mb-5">
+        <h1 className="text-2xl font-bold text-[#415A80]">Contact Messages</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Messages List */}
+        {/* Message List */}
         <div className="col-span-1 bg-white shadow rounded-lg overflow-hidden">
-          <div className="p-4 border-b border-gray-200">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-medium text-gray-900">Messages</h2>
-              <select
-                id="filter"
-                name="filter"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="block pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-              >
-                <option value="all">All Messages</option>
-                <option value="unreplied">Unreplied</option>
-                <option value="replied">Replied</option>
-              </select>
-            </div>
+          <div className="p-4 border-b border-[#D7E2E9] flex justify-between items-center">
+            <h2 className="text-lg font-medium text-[#415A80]">Messages</h2>
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="border-[#D7E2E9] rounded-md text-sm bg-[#E5E7E9] focus:ring-[#A5D4DC] focus:border-[#A5D4DC]"
+            >
+              <option value="all">All</option>
+              <option value="unreplied">Unanswered</option>
+              <option value="replied">Answered</option>
+            </select>
           </div>
-          
-          <div className="divide-y divide-gray-200">
+
+          <div className="divide-y divide-[#D7E2E9]">
             {loading ? (
-              <div className="p-4 text-center text-gray-500">Loading messages...</div>
+              <div className="p-4 text-center text-gray-500">Loading...</div>
             ) : filteredMessages.length === 0 ? (
               <div className="p-4 text-center text-gray-500">No messages found.</div>
             ) : (
               filteredMessages.map((message) => (
-                <div 
-                  key={message.id}
-                  onClick={() => setSelectedMessage(message)}
-                  className={`p-4 cursor-pointer hover:bg-gray-50 ${
-                    selectedMessage?.id === message.id ? 'bg-primary-light' : ''
-                  } ${
-                    !message.replied ? 'border-l-4 border-primary' : ''
-                  }`}
+                <div
+                  key={message._id}
+                  onClick={() => {
+                    setSelectedMessage(message);
+                    setReplyText('');
+                  }}
+                  className={`p-4 cursor-pointer hover:bg-[#E5E7E9] transition-colors ${
+                    selectedMessage?._id === message._id ? 'bg-[#D7E2E9]' : ''
+                  } ${!message.replied ? 'border-l-4 border-[#415A80]' : ''}`}
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-sm font-medium text-gray-900">{message.name}</h3>
+                      <h3 className="text-sm font-medium text-[#415A80]">{message.name}</h3>
                       <p className="text-xs text-gray-500">{message.email}</p>
                     </div>
                     <div className="text-xs text-gray-500">
-                      {formatDate(message.timestamp)}
+                      {formatDate(message.createdAt)}
                     </div>
                   </div>
-                  <p className="mt-2 text-sm text-gray-600 truncate">
-                    {message.message}
-                  </p>
+                  <p className="mt-2 text-sm text-gray-600 truncate">{message.message}</p>
                   <div className="mt-2 flex justify-end">
                     {message.replied ? (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Replied
-                      </span>
+                      <span className="text-green-700 text-xs bg-green-100 px-2 py-1 rounded-full">Replied</span>
                     ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        Pending
-                      </span>
+                      <span className="text-[#415A80] text-xs bg-[#D7E2E9] px-2 py-1 rounded-full">Awaiting Reply</span>
                     )}
                   </div>
                 </div>
@@ -153,65 +144,62 @@ export default function ContactMessagesPage() {
           </div>
         </div>
 
-        {/* Message Detail */}
+        {/* Message Details + Reply */}
         <div className="col-span-2 bg-white shadow rounded-lg">
           {selectedMessage ? (
             <div className="h-full flex flex-col">
-              <div className="p-4 border-b border-gray-200">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-medium text-gray-900">Message Details</h2>
-                  <div>
-                    {!selectedMessage.replied && (
-                      <button
-                        onClick={() => handleMarkAsReplied(selectedMessage.id)}
-                        className="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                      >
-                        Mark as Replied
-                      </button>
-                    )}
-                  </div>
-                </div>
+              <div className="p-4 border-b border-[#D7E2E9] flex justify-between items-center">
+                <h2 className="text-lg font-medium text-[#415A80]">Message Details</h2>
+                <button
+                  onClick={() => handleDelete(selectedMessage._id)}
+                  className="bg-red-600 text-white text-sm px-3 py-1 rounded hover:bg-red-700 transition-colors"
+                >
+                  Delete
+                </button>
               </div>
-              
+
               <div className="p-4 space-y-4 flex-grow">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">From</h3>
-                  <p className="mt-1 text-sm text-gray-900">{selectedMessage.name} ({selectedMessage.email})</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Date</h3>
-                  <p className="mt-1 text-sm text-gray-900">{formatDate(selectedMessage.timestamp)}</p>
+                  <p className="mt-1 text-sm text-[#415A80]">
+                    {selectedMessage.name} ({selectedMessage.email})
+                  </p>
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500">Message</h3>
-                  <p className="mt-1 text-sm text-gray-900">{selectedMessage.message}</p>
+                  <p className="mt-1 text-sm text-[#415A80]">{selectedMessage.message}</p>
                 </div>
+                {selectedMessage.phone && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Phone Number</h3>
+                    <p className="mt-1 text-sm text-[#415A80]">{selectedMessage.phone}</p>
+                  </div>
+                )}
               </div>
-              
-              <div className="p-4 border-t border-gray-200">
-                <div>
-                  <label htmlFor="reply" className="block text-sm font-medium text-gray-700">
-                    Reply
+
+              {!selectedMessage.replied && (
+                <div className="p-4 border-t border-[#D7E2E9]">
+                  <label className="block text-sm font-medium text-[#415A80] mb-1">
+                    Reply to Message
                   </label>
-                  <div className="mt-1">
-                    <textarea
-                      id="reply"
-                      name="reply"
-                      rows={4}
-                      className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
-                      placeholder="Type your reply here..."
-                    />
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    rows={4}
+                    className="w-full border border-[#D7E2E9] p-2 rounded text-sm bg-[#E5E7E9] focus:ring-[#A5D4DC] focus:border-[#A5D4DC]"
+                    placeholder="Write your reply here..."
+                  />
+                  <div className="mt-3 flex justify-end">
+                    <button
+                      onClick={handleSendReply}
+                      disabled={sendingReply}
+                      className="bg-[#415A80] text-white px-4 py-2 rounded hover:bg-[#A5D4DC] transition-colors"
+                    >
+                      {sendingReply ? 'Sending...' : 'Send Reply'}
+                    </button>
                   </div>
                 </div>
-                <div className="mt-4 flex justify-end">
-                  <button
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                  >
-                    Send Reply
-                  </button>
-                </div>
-              </div>
+              )}
             </div>
           ) : (
             <div className="h-full flex items-center justify-center p-6 text-gray-500">

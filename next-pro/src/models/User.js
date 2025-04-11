@@ -19,6 +19,15 @@ const userSchema = new mongoose.Schema({
   otp: { type: String },
   // علاقة مع الاشتراكات
   subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subscription" }],
+  status: {
+    type: String,
+    enum: ['Active', 'Follow-up', 'New', 'Completed'],
+    default: 'Active',
+  },
+  report: {
+    type: String, // لحفظ رابط الملف (صورة أو PDF)
+    required: false, // يمكن أن يكون فارغًا عند عدم رفع التقرير
+  },
 },
 {
   timestamps: true // يضيف createdAt و updatedAt تلقائيًا

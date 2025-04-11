@@ -10,7 +10,6 @@ export default function RootLayout({ children }) {
       </head>
       <body>
       <SessionWrapper>
-
       <Navbar/>
       <main>{children}</main>
       </SessionWrapper>

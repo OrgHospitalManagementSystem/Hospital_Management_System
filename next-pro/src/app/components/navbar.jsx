@@ -1,5 +1,3 @@
-
-
 // 'use client';
 
 // import { useState, useEffect } from 'react';
@@ -32,8 +30,8 @@
 //   const [mounted, setMounted] = useState(false);
 
 //   // Check if current path is admin dashboard, login, or register
-//   const isHiddenPage = pathname?.startsWith('/adminDashboard') || 
-//                         pathname === '/login' || 
+//   const isHiddenPage = pathname?.startsWith('/adminDashboard') ||
+//                         pathname === '/login' ||
 //                         pathname === '/register';
 
 //   useEffect(() => {
@@ -57,7 +55,7 @@
 
 //   // Prevent hydration issues
 //   if (!mounted) return null;
-  
+
 //   // في صفحات لوحة التحكم أو تسجيل الدخول والتسجيل لا يُعرض الـ Navbar
 //   if (isHiddenPage) {
 //     return null;
@@ -84,12 +82,12 @@
 //                   <Link
 //                     href={link.path}
 //                     className={`px-2 py-1 rounded-md text-sm font-medium transition-colors ${
-//                       pathname === link.path 
-//                         ? scrolled 
-//                           ? 'bg-[#A5D4DC] text-[#415A80] font-semibold' 
+//                       pathname === link.path
+//                         ? scrolled
+//                           ? 'bg-[#A5D4DC] text-[#415A80] font-semibold'
 //                           : 'bg-white text-[#415A80] font-semibold'
-//                         : scrolled 
-//                           ? 'text-[#415A80] hover:bg-[#E5E7E9]' 
+//                         : scrolled
+//                           ? 'text-[#415A80] hover:bg-[#E5E7E9]'
 //                           : 'text-white hover:bg-[#334766]'
 //                     }`}
 //                   >
@@ -233,11 +231,9 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "Services", path: "/services" },
   { name: "Articles", path: "/articles" },
   { name: "Contact", path: "/contact" },
   { name: "Book Appointment", path: "/patient/book" },
-  { name: "My Appointments", path: "/patient/my-appointments" },
 ];
 
 export default function Navbar() {
@@ -259,7 +255,7 @@ export default function Navbar() {
   const isHiddenPage =
     pathname?.startsWith("/adminDashboard") ||
     pathname === "/login" ||
-    pathname === "/register"||
+    pathname === "/register" ||
     pathname?.startsWith("/doctorDashboard");
 
   // جلب بيانات المستخدم الحالي عند التحميل
@@ -302,6 +298,24 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/current-user", {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        console.log("Logout successful");
+        // مثلا ترجع المستخدم لصفحة تسجيل الدخول
+        window.location.href = "/";
+      } else {
+        const data = await res.json();
+        console.error("Logout failed:", data.error);
+      }
+    } catch (err) {
+      console.error("Error logging out:", err);
+    }
   };
 
   // منع مشاكل الـ hydration
@@ -382,6 +396,15 @@ export default function Navbar() {
                     U
                   </div>
                 </Link>
+                {/* زر تسجيل الخروج */}
+                <button
+                  onClick={handleLogout}
+                  className={`p-1 rounded transition-colors ${
+                    scrolled ? "bg-[#A5D4DC]" : "bg-white"
+                  }`}
+                >
+                  Logout
+                </button>
               </>
             ) : (
               // إذا لم يكن مستخدم مسجّل دخول
@@ -521,6 +544,16 @@ export default function Navbar() {
                   >
                     Admin
                   </Link>
+                  
+                {/* زر تسجيل الخروج */}
+                <button
+                  onClick={handleLogout}
+                  className={`p-1 rounded transition-colors ${
+                    scrolled ? "bg-[#A5D4DC]" : "bg-white"
+                  }`}
+                >
+                  Logout
+                </button>
                 </div>
               </div>
             </div>

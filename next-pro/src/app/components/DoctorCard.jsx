@@ -1,5 +1,5 @@
 // /components/DoctorCard.jsx
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -46,7 +46,12 @@ const DoctorCard = ({ doctor }) => {
           href={`/patient/book`}
           className="flex items-center justify-center"
         >
-          <button className="mt-4 w-full bg-[#415A80] hover:cursor-pointer hover:bg-[#2a4062] text-white py-2 px-4 rounded-md transition-colors">
+          <button
+            onClick={() => {
+              localStorage.setItem("bookDoctor", doctor.name);
+            }}
+            className="mt-4 w-full bg-[#415A80] hover:cursor-pointer hover:bg-[#2a4062] text-white py-2 px-4 rounded-md transition-colors"
+          >
             Book Appointment
           </button>
         </Link>

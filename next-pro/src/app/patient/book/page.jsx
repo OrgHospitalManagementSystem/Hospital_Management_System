@@ -168,6 +168,15 @@ export default function BookPage() {
   const [submitting, setSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [doctorDetails, setDoctorDetails] = useState(null);
+  const [bookDoctor, setBookDoctor] = useState("");
+  
+  useEffect(() => {
+    const storedDoctorId = localStorage.getItem("bookDoctor");
+    if (storedDoctorId) {
+      setBookDoctor(storedDoctorId);
+    }
+  }, []);
+  console.log(bookDoctor)
 
   useEffect(() => {
     const fetchDoctors = async () => {

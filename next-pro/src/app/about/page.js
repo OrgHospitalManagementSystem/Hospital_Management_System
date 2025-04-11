@@ -417,7 +417,7 @@ export default function About() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-[#415A80] text-white">
+        <section className="py-16 bg-[#415A80] mb-10 text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">
               Experience the SmileBright Difference

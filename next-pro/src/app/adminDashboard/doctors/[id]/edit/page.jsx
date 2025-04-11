@@ -381,7 +381,7 @@ export default function EditDoctorPage() {
     };
     
     try {
-      const response = await axios.put(`/api/doctors/${id}`, dataToSubmit);
+      const response = await axios.put(`/api/admin/doctors/${id}`, dataToSubmit);
       
       setMessage({ type: 'success', text: 'Doctor information updated successfully' });
       

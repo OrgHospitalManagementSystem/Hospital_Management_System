@@ -1,4 +1,3 @@
-// src/app/adminDashboard/settings/page.js
 'use client';
 
 import { useState } from 'react';
@@ -8,7 +7,7 @@ export default function SettingsPage() {
     clinicName: 'Modern Medical Center',
     email: 'contact@modernmedical.com',
     phone: '(555) 123-4567',
-    address: '123 Healthcare Blvd, Medical City, MC 12345',
+    address: 'Amman-jordan',
     website: 'www.modernmedicalcenter.com'
   });
 
@@ -80,20 +79,20 @@ export default function SettingsPage() {
 
   return (
     <div>
-      <div className="pb-5 border-b border-gray-200 mb-5">
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+      <div className="pb-5 border-b border-[#D7E2E9] mb-5">
+        <h1 className="text-2xl font-bold text-[#415A80]">Settings</h1>
       </div>
 
       {/* Tabs */}
       <div className="mb-8">
-        <div className="border-b border-gray-200">
+        <div className="border-b border-[#D7E2E9]">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('general')}
               className={`${
                 activeTab === 'general'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-[#415A80] text-[#415A80]'
+                  : 'border-transparent text-gray-500 hover:text-[#415A80] hover:border-[#D7E2E9]'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
               General
@@ -102,8 +101,8 @@ export default function SettingsPage() {
               onClick={() => setActiveTab('appointments')}
               className={`${
                 activeTab === 'appointments'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-[#415A80] text-[#415A80]'
+                  : 'border-transparent text-gray-500 hover:text-[#415A80] hover:border-[#D7E2E9]'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
               Appointments
@@ -112,8 +111,8 @@ export default function SettingsPage() {
               onClick={() => setActiveTab('notifications')}
               className={`${
                 activeTab === 'notifications'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-[#415A80] text-[#415A80]'
+                  : 'border-transparent text-gray-500 hover:text-[#415A80] hover:border-[#D7E2E9]'
               } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
             >
               Notifications
@@ -126,11 +125,11 @@ export default function SettingsPage() {
         {/* General Settings */}
         {activeTab === 'general' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-medium text-gray-900">General Settings</h2>
+            <h2 className="text-lg font-medium text-[#415A80]">General Settings</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="clinicName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="clinicName" className="block text-sm font-medium text-[#415A80]">
                   Clinic Name
                 </label>
                 <div className="mt-1">
@@ -140,13 +139,13 @@ export default function SettingsPage() {
                     id="clinicName"
                     value={generalSettings.clinicName}
                     onChange={handleGeneralSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-medium text-[#415A80]">
                   Email
                 </label>
                 <div className="mt-1">
@@ -156,13 +155,13 @@ export default function SettingsPage() {
                     id="email"
                     value={generalSettings.email}
                     onChange={handleGeneralSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="phone" className="block text-sm font-medium text-[#415A80]">
                   Phone
                 </label>
                 <div className="mt-1">
@@ -172,13 +171,13 @@ export default function SettingsPage() {
                     id="phone"
                     value={generalSettings.phone}
                     onChange={handleGeneralSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="website" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="website" className="block text-sm font-medium text-[#415A80]">
                   Website
                 </label>
                 <div className="mt-1">
@@ -188,13 +187,13 @@ export default function SettingsPage() {
                     id="website"
                     value={generalSettings.website}
                     onChange={handleGeneralSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
 
               <div className="col-span-1 md:col-span-2">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="address" className="block text-sm font-medium text-[#415A80]">
                   Address
                 </label>
                 <div className="mt-1">
@@ -204,7 +203,7 @@ export default function SettingsPage() {
                     rows={3}
                     value={generalSettings.address}
                     onChange={handleGeneralSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
@@ -215,7 +214,7 @@ export default function SettingsPage() {
         {/* Appointment Settings */}
         {activeTab === 'appointments' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-medium text-gray-900">Appointment Settings</h2>
+            <h2 className="text-lg font-medium text-[#415A80]">Appointment Settings</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="col-span-1 md:col-span-2">
@@ -227,11 +226,11 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={appointmentSettings.allowOnlineBooking}
                       onChange={handleAppointmentSettingsChange}
-                      className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                      className="focus:ring-[#A5D4DC] h-4 w-4 text-[#415A80] border-[#D7E2E9] rounded"
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="allowOnlineBooking" className="font-medium text-gray-700">
+                    <label htmlFor="allowOnlineBooking" className="font-medium text-[#415A80]">
                       Allow Online Booking
                     </label>
                     <p className="text-gray-500">Enable patients to book appointments online through your website.</p>
@@ -240,7 +239,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label htmlFor="minBookingNotice" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="minBookingNotice" className="block text-sm font-medium text-[#415A80]">
                   Minimum Booking Notice (hours)
                 </label>
                 <div className="mt-1">
@@ -251,7 +250,7 @@ export default function SettingsPage() {
                     min="0"
                     value={appointmentSettings.minBookingNotice}
                     onChange={handleAppointmentSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
                 <p className="mt-1 text-sm text-gray-500">
@@ -260,7 +259,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label htmlFor="maxDaysInAdvance" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="maxDaysInAdvance" className="block text-sm font-medium text-[#415A80]">
                   Maximum Days in Advance
                 </label>
                 <div className="mt-1">
@@ -271,7 +270,7 @@ export default function SettingsPage() {
                     min="1"
                     value={appointmentSettings.maxDaysInAdvance}
                     onChange={handleAppointmentSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
                 <p className="mt-1 text-sm text-gray-500">
@@ -280,7 +279,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label htmlFor="appointmentDuration" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="appointmentDuration" className="block text-sm font-medium text-[#415A80]">
                   Default Appointment Duration (minutes)
                 </label>
                 <div className="mt-1">
@@ -289,7 +288,7 @@ export default function SettingsPage() {
                     name="appointmentDuration"
                     value={appointmentSettings.appointmentDuration}
                     onChange={handleAppointmentSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   >
                     <option value="15">15 minutes</option>
                     <option value="30">30 minutes</option>
@@ -300,7 +299,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label htmlFor="workingHoursStart" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="workingHoursStart" className="block text-sm font-medium text-[#415A80]">
                   Working Hours Start
                 </label>
                 <div className="mt-1">
@@ -310,13 +309,13 @@ export default function SettingsPage() {
                     id="workingHoursStart"
                     value={appointmentSettings.workingHoursStart}
                     onChange={handleAppointmentSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="workingHoursEnd" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="workingHoursEnd" className="block text-sm font-medium text-[#415A80]">
                   Working Hours End
                 </label>
                 <div className="mt-1">
@@ -326,13 +325,13 @@ export default function SettingsPage() {
                     id="workingHoursEnd"
                     value={appointmentSettings.workingHoursEnd}
                     onChange={handleAppointmentSettingsChange}
-                    className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                   />
                 </div>
               </div>
 
               <div className="col-span-1 md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">Working Days</label>
+                <label className="block text-sm font-medium text-[#415A80]">Working Days</label>
                 <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2">
                   {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => (
                     <div key={day} className="flex items-center">
@@ -341,7 +340,7 @@ export default function SettingsPage() {
                         type="checkbox"
                         checked={appointmentSettings.workingDays.includes(day)}
                         onChange={() => handleWorkingDaysChange(day)}
-                        className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                        className="focus:ring-[#A5D4DC] h-4 w-4 text-[#415A80] border-[#D7E2E9] rounded"
                       />
                       <label htmlFor={`day-${day}`} className="ml-2 text-sm text-gray-700 capitalize">
                         {day}
@@ -357,7 +356,7 @@ export default function SettingsPage() {
         {/* Notification Settings */}
         {activeTab === 'notifications' && (
           <div className="space-y-6">
-            <h2 className="text-lg font-medium text-gray-900">Notification Settings</h2>
+            <h2 className="text-lg font-medium text-[#415A80]">Notification Settings</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="col-span-1 md:col-span-2">
@@ -369,11 +368,11 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={notificationSettings.sendEmailNotifications}
                       onChange={handleNotificationSettingsChange}
-                      className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                      className="focus:ring-[#A5D4DC] h-4 w-4 text-[#415A80] border-[#D7E2E9] rounded"
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="sendEmailNotifications" className="font-medium text-gray-700">
+                    <label htmlFor="sendEmailNotifications" className="font-medium text-[#415A80]">
                       Send Email Notifications
                     </label>
                     <p className="text-gray-500">Send email notifications for appointments and other events.</p>
@@ -390,11 +389,11 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={notificationSettings.sendSMSNotifications}
                       onChange={handleNotificationSettingsChange}
-                      className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                      className="focus:ring-[#A5D4DC] h-4 w-4 text-[#415A80] border-[#D7E2E9] rounded"
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="sendSMSNotifications" className="font-medium text-gray-700">
+                    <label htmlFor="sendSMSNotifications" className="font-medium text-[#415A80]">
                       Send SMS Notifications
                     </label>
                     <p className="text-gray-500">Send SMS notifications for appointments and other events.</p>
@@ -411,11 +410,11 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={notificationSettings.appointmentReminders}
                       onChange={handleNotificationSettingsChange}
-                      className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                      className="focus:ring-[#A5D4DC] h-4 w-4 text-[#415A80] border-[#D7E2E9] rounded"
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="appointmentReminders" className="font-medium text-gray-700">
+                    <label htmlFor="appointmentReminders" className="font-medium text-[#415A80]">
                       Send Appointment Reminders
                     </label>
                     <p className="text-gray-500">Send reminders to patients before their scheduled appointments.</p>
@@ -425,7 +424,7 @@ export default function SettingsPage() {
 
               {notificationSettings.appointmentReminders && (
                 <div className="col-span-1 md:col-span-2">
-                  <label htmlFor="reminderTime" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="reminderTime" className="block text-sm font-medium text-[#415A80]">
                     Reminder Time (hours before appointment)
                   </label>
                   <div className="mt-1">
@@ -434,7 +433,7 @@ export default function SettingsPage() {
                       name="reminderTime"
                       value={notificationSettings.reminderTime}
                       onChange={handleNotificationSettingsChange}
-                      className="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md"
+                      className="shadow-sm focus:ring-[#A5D4DC] focus:border-[#A5D4DC] block w-full sm:text-sm border-[#D7E2E9] rounded-md bg-[#E5E7E9]"
                     >
                       <option value="1">1 hour</option>
                       <option value="2">2 hours</option>
@@ -456,7 +455,7 @@ export default function SettingsPage() {
             type="button"
             onClick={handleSaveSettings}
             disabled={saving}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#415A80] hover:bg-[#A5D4DC] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A5D4DC]"
           >
             {saving ? 'Saving...' : 'Save Settings'}
           </button>

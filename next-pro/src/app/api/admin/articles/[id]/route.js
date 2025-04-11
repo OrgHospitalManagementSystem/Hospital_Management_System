@@ -16,38 +16,67 @@ export async function GET(_, { params }) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
-
 export async function PUT(req, { params }) {
-  await dbConnect();
-  try {
-    const body = await req.json();
-    const updatedArticle = await Article.findByIdAndUpdate(
-      params.id,
-      { ...body, updatedAt: Date.now() },
-      { new: true, runValidators: true }
-    );
-    if (!updatedArticle) {
-      return NextResponse.json({ success: false, message: 'Article not found' }, { status: 404 });
+    await connectToDB();
+    try {
+      const body = await req.json();
+  
+      // إعادة توليد slug إذا تم تغيير العنوان
+      if (body.title) {
+        body.slug = body.title
+          .toLowerCase()
+          .replace(/[^ء-ي\w\s]/gi, '')
+          .replace(/\s+/g, '-');
+      }
+  
+      console.log('🔧 Body to update:', body);
+  
+      const updatedArticle = await Article.findByIdAndUpdate(
+        params.id,
+        { ...body, updatedAt: Date.now() },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedArticle) {
+        return NextResponse.json({ success: false, message: 'Article not found' }, { status: 404 });
+      }
+  
+      return NextResponse.json({ success: true, data: updatedArticle }, { status: 200 });
+    } catch (error) {
+      console.error('❌ Error updating article:', error);
+      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ success: true, data: updatedArticle }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
   }
-}
-
-export async function DELETE(_, { params }) {
-  await dbConnect();
-  try {
-    const deletedArticle = await Article.findByIdAndUpdate(
-      params.id,
-      { isDeleted: true, updatedAt: Date.now() },
-      { new: true }
-    );
-    if (!deletedArticle) {
-      return NextResponse.json({ success: false, message: 'Article not found' }, { status: 404 });
+  
+  
+  export async function DELETE(_, { params }) {
+    await connectToDB();
+    try {
+      console.log('🗑️ Trying to delete article with ID:', params.id);
+  
+      const deletedArticle = await Article.findByIdAndUpdate(
+        params.id,
+        { isDeleted: true, updatedAt: Date.now() },
+        { new: true }
+      );
+  
+      if (!deletedArticle) {
+        return NextResponse.json(
+          { success: false, message: 'Article not found' },
+          { status: 404 }
+        );
+      }
+  
+      return NextResponse.json(
+        { success: true, message: 'Article soft deleted' },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.error('❌ Error deleting article:', error);
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 500 }
+      );
     }
-    return NextResponse.json({ success: true, message: 'Article soft deleted' }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
-}
+  

@@ -112,6 +112,7 @@ export async function POST(req) {
 
     // إنشاء المستخدم المرتبط
     const user = await User.create({
+      _id:doctor._id,
       name: doctor.name,
       email: doctor.email,
       password: hashedPassword,

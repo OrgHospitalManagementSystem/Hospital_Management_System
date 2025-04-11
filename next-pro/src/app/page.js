@@ -27,11 +27,21 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import CategorySelection from "./components/CategorySelection";
 
 export default function Home() {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    if (category) {
+      router.push(`/doctors?category=${category}`);
+    }
+  };
 
   useEffect(() => {
     const getArticles = async () => {
@@ -210,6 +220,8 @@ export default function Home() {
           </a>
         </div>
       </div>
+
+      <CategorySelection />
 
       <section className="py-20 lg:px-10 bg-gradient-to-b from-[#D7E2E9] to-white">
         <div className="container mx-auto px-4">

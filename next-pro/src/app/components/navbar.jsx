@@ -329,7 +329,7 @@ export default function Navbar() {
                   scrolled ? "text-[#415A80]" : "text-white"
                 }`}
               >
-                <span className="mr-2">🏥</span> Health Clinic
+                <span className="mr-2">🏥</span> SmiloClinic
               </span>
             </Link>
           </div>

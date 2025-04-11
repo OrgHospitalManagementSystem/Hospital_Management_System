@@ -1,5 +1,6 @@
 
 
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -15,6 +16,8 @@ const navLinks = [
   { name: "Contact", path: "/contact" },
   { name: "Book Appointment", path: "/patient/book" },
   { name: "My Appointments", path: "/patient/my-appointments" },
+  { name: "Chat", path: "/chat" },  // إضافة رابط الشات هنا
+  { name: "Video Call", path: "/video-call" },   // ✅ رابط الفيديو كول
 
 ];
 

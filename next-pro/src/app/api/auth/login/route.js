@@ -27,14 +27,14 @@ export async function POST(req) {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '7d',
     });
-
+    const role = user.role || 'user';
     // إعداد الكوكي
     const cookie = `token=${token}; Path=/; HttpOnly; Max-Age=604800; SameSite=Strict; ${
       process.env.NODE_ENV === 'production' ? 'Secure;' : ''
     }`;
 
-    return new Response(JSON.stringify({ message: 'تم تسجيل الدخول بنجاح' }), {
-      status: 200,
+    return new Response(JSON.stringify({ message: 'تم تسجيل الدخول بنجاح',role: role, }), {
+      status: 200,  
       headers: {
         'Set-Cookie': cookie,
         'Content-Type': 'application/json',

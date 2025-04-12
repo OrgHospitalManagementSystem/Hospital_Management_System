@@ -234,6 +234,10 @@ const navLinks = [
   { name: "Articles", path: "/articles" },
   { name: "Contact", path: "/contact" },
   { name: "Book Appointment", path: "/patient/book" },
+  { name: "My Appointments", path: "/patient/my-appointments" },
+  { name: "Chat", path: "/chat" },  // إضافة رابط الشات هنا
+  { name: "Video Call", path: "/video-call" },   // ✅ رابط الفيديو كول
+
 ];
 
 export default function Navbar() {

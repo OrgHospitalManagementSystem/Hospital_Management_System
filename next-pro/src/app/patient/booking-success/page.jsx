@@ -66,7 +66,7 @@ export default function BookingSuccessPage() {
             
             <div className="border-t border-[#D7E2E9] pt-6 mt-6 flex flex-col sm:flex-row justify-center gap-4">
               <Link 
-                href="/appointments" 
+                href="/patient/my-appointments" 
                 className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-[#415A80] text-white hover:bg-[#A5D4DC] transition-colors"
               >
                my appointments 

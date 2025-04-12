@@ -234,9 +234,19 @@ export default function Login() {
   
       if (!res.ok) {
         setError(data.message || 'Login failed. Please check your credentials.');
-      } else {
-        // Success - redirect to home page
-        window.location.href = '/';
+      } 
+      else {
+        // Redirect based on the role returned by the API
+        if (data.role == "doctor") {
+          console.log("ff");
+          window.location.href = '/doctorDashboard';
+        } else if (data.role == "admin") {
+          console.log("dd");
+          window.location.href = '/adminDashboard';
+        } else {
+          window.location.href = '/';
+          console.log("bb");
+        }
       }
     } catch (error) {
       console.error('Login Error:', error);

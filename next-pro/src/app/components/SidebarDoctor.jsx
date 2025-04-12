@@ -854,17 +854,17 @@ export default function SidebarDoctor() {
     { icon: <HomeIcon className="h-6 w-6" />, title: "Dashboard", href: "/doctorDashboard", active: true },
     { icon: <UsersIcon className="h-6 w-6" />, title: "Patients", href: "/doctorDashboard/patients" },
     { icon: <CalendarIcon className="h-6 w-6" />, title: "Appointments", href: "/doctorDashboard/appointments" },
-    { icon: <DocumentTextIcon className="h-6 w-6" />, title: "Medical Records", href: "/doctorDashboard/medical-records" },
-  ];
-
-  const reportsMenu = [
-    { icon: <ChartBarIcon className="h-6 w-6" />, title: "Performance Stats", href: "/statistics" },
     { icon: <DocumentTextIcon className="h-6 w-6" />, title: "Reports", href: "/doctorDashboard/reports" },
   ];
 
+  const reportsMenu = [
+    // { icon: <ChartBarIcon className="h-6 w-6" />, title: "Performance Stats", href: "/statistics" },
+    // { icon: <DocumentTextIcon className="h-6 w-6" />, title: "Reports", href: "/doctorDashboard/reports" },
+  ];
+
   const settingsMenu = [
-    { icon: <CogIcon className="h-6 w-6" />, title: "Settings", href: "/settings" },
-    { icon: <ArrowRightOnRectangleIcon className="h-6 w-6" />, title: "Logout", href: "/logout" },
+    // { icon: <CogIcon className="h-6 w-6" />, title: "Settings", href: "/settings" },
+    { icon: <ArrowRightOnRectangleIcon className="h-6 w-6" />, title: "Logout", href: "/" },
   ];
 
   const renderNavItem = ({ icon, title, href, active = false }) => (
@@ -921,14 +921,14 @@ export default function SidebarDoctor() {
         </nav>
 
         <div className="border-b border-[#D7E2E9] border-opacity-20 my-4"></div>
-
+{/* 
         <h2
           className={`text-[#D7E2E9] text-opacity-80 px-4 py-2 text-sm ${
             isCollapsed ? 'text-center' : ''
           }`}
         >
           {!isCollapsed && 'Reports & Analytics'}
-        </h2>
+        </h2> */}
         <nav className="mt-2">
           {reportsMenu.map((item) => renderNavItem(item))}
         </nav>

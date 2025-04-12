@@ -1,4 +1,4 @@
-# 🦷 Dental Clinic Management System
+# 🦷 SmiloClinic Management System
 
 ## 📋 Project Overview
 

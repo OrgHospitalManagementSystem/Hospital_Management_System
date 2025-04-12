@@ -94,10 +94,10 @@ export default function AdminLayout({ children }) {
               </div>
 
               {/* Logout button */}
-              <button className="p-1 rounded-full text-white hover:bg-[#334766] focus:outline-none focus:ring-2 focus:ring-white transition-colors">
+              <Link href={"/"}>    <button className="p-1 rounded-full text-white hover:bg-[#334766] focus:outline-none focus:ring-2 focus:ring-white transition-colors">
                 <span className="sr-only">Logout</span>
                 <LogOut className="h-6 w-6" />
-              </button>
+              </button></Link> 
             </div>
           </div>
         </div>

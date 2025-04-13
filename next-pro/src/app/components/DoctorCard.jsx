@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const DoctorCard = ({ doctor }) => {
+  
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="h-48 bg-gray-200 relative">

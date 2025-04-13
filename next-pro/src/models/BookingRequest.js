@@ -21,7 +21,11 @@ const bookingRequestSchema = new mongoose.Schema({
     type: String,
     enum: ['unpaid', 'paid'],
     default: 'unpaid'
-  }
+  },
+  roomId: {
+    type: String,
+    default: null
+  },
 }, { timestamps: true });
 
 export default mongoose.models.BookingRequest || mongoose.model('BookingRequest', bookingRequestSchema);

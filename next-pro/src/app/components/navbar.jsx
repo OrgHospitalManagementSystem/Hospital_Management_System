@@ -549,7 +549,7 @@ const navLinks = [
   { name: "Book Appointment", path: "/patient/book" },
   { name: "My Appointments", path: "/patient/my-appointments" },
   { name: "Chat", path: "/chat" },  // Add chat link here
-  { name: "Video Call", path: "/video-call" },   // Video Call link
+  // { name: "Video Call", path: "/video-call" },   // Video Call link
 ];
 
 export default function Navbar() {

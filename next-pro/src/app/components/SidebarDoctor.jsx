@@ -858,8 +858,8 @@ export default function SidebarDoctor() {
   ];
 
   const reportsMenu = [
-    // { icon: <ChartBarIcon className="h-6 w-6" />, title: "Performance Stats", href: "/statistics" },
-    // { icon: <DocumentTextIcon className="h-6 w-6" />, title: "Reports", href: "/doctorDashboard/reports" },
+    { icon: <ChartBarIcon className="h-6 w-6" />, title: "video-call", href: "/doctorDashboard/video-call" },
+    { icon: <DocumentTextIcon className="h-6 w-6" />, title: "chat", href: "/doctorDashboard/chat" },
   ];
 
   const settingsMenu = [
@@ -921,14 +921,14 @@ export default function SidebarDoctor() {
         </nav>
 
         <div className="border-b border-[#D7E2E9] border-opacity-20 my-4"></div>
-{/* 
+
         <h2
           className={`text-[#D7E2E9] text-opacity-80 px-4 py-2 text-sm ${
             isCollapsed ? 'text-center' : ''
           }`}
         >
-          {!isCollapsed && 'Reports & Analytics'}
-        </h2> */}
+          {!isCollapsed && 'communication'}
+        </h2>
         <nav className="mt-2">
           {reportsMenu.map((item) => renderNavItem(item))}
         </nav>

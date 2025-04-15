@@ -1165,7 +1165,7 @@ const UploadReportForm = () => {
       setError("Please select a file to upload.");
       return;
     }
-
+    toast.success("Report uploaded successfully!");
     setLoading(true);
     setActiveBookingId(bookingId);
     setError(null);

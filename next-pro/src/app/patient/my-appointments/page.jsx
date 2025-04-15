@@ -380,15 +380,33 @@ export default function MyAppointmentsPage() {
               >
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                       <User className="h-5 w-5 text-[#415A80]" />
-                      <span className="font-medium">Dr. {app.doctor.name}</span>
+                      <span className="font-medium">
+  {app.doctor?.name ? `Dr. ${app.doctor.name}` : "Doctor info not available"}
+</span>
+
                       {app.doctor.specialty && (
                         <span className="text-sm text-gray-500">
                           ({app.doctor.specialty})
                         </span>
                       )}
-                    </div>
+                    </div> */}
+<div className="flex items-center gap-2">
+  <User className="h-5 w-5 text-[#415A80]" />
+  {app.doctor ? (
+    <>
+      <span className="font-medium">Dr. {app.doctor.name}</span>
+      {app.doctor.specialty && (
+        <span className="text-sm text-gray-500">
+          ({app.doctor.specialty})
+        </span>
+      )}
+    </>
+  ) : (
+    <span className="font-medium text-gray-500">Doctor info not available</span>
+  )}
+</div>
 
                     <div className="flex items-center gap-2">
                       <Calendar className="h-5 w-5 text-[#415A80]" />
@@ -405,7 +423,7 @@ export default function MyAppointmentsPage() {
                     {app.reason && (
                       <div className="flex items-start gap-2">
                         <FileText className="h-5 w-5 text-[#415A80] mt-0.5" />
-                        <span className="text-gray-700">{app.reason}</span>
+                        <span className="text-gray-700 ">{app.reason}</span>
                       </div>
                     )}
                   </div>

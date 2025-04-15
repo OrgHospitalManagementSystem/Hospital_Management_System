@@ -858,8 +858,8 @@ export default function SidebarDoctor() {
   ];
 
   const reportsMenu = [
-    // { icon: <ChartBarIcon className="h-6 w-6" />, title: "Performance Stats", href: "/statistics" },
-    // { icon: <DocumentTextIcon className="h-6 w-6" />, title: "Reports", href: "/doctorDashboard/reports" },
+    { icon: <ChartBarIcon className="h-6 w-6" />, title: "video-call", href: "/doctorDashboard/video-call" },
+    { icon: <DocumentTextIcon className="h-6 w-6" />, title: "chat", href: "/doctorDashboard/chat" },
   ];
 
   const settingsMenu = [
@@ -899,14 +899,28 @@ export default function SidebarDoctor() {
       </button>
 
       {/* العنوان */}
-      <div className="p-4 bg-[#374E70] flex items-center justify-center">
+      {/* <div className="p-4 bg-[#374E70] flex items-center justify-center">
         {!isCollapsed ? (
-          <h1 className="text-[#A5D4DC] text-xl font-bold">Doctor Dashboard</h1>
+          <h1 className="text-[#A5D4DC] text-xl font-bold">SmiloClinic</h1>
         ) : (
           <span className="text-[#A5D4DC] text-xl font-bold">D</span>
         )}
-      </div>
-
+      </div> */}
+   <div className="flex shrink-0 flex items-center justify-center p-4">
+            <Link href="/" className="flex items-center group">
+              <svg 
+                className="h-8 w-8 mr-2 transition-transform duration-300 group-hover:scale-110" 
+                viewBox="0 0 40 40" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="40" height="40" rx="8" fill="#A5D4DC"/>
+                <path d="M12 20C12 16.13 15.13 13 19 13H29V27H19C15.13 27 12 23.87 12 20Z" fill="white"/>
+                <path d="M24 17V23M21 20H27" stroke="#415A80" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              <span className="text-xl font-bold text-white drop-shadow-sm">SmiloClinic</span>
+            </Link>
+            </div>
       {/* القوائم */}
       <div className="mt-6">
         <h2
@@ -921,14 +935,14 @@ export default function SidebarDoctor() {
         </nav>
 
         <div className="border-b border-[#D7E2E9] border-opacity-20 my-4"></div>
-{/* 
+
         <h2
           className={`text-[#D7E2E9] text-opacity-80 px-4 py-2 text-sm ${
             isCollapsed ? 'text-center' : ''
           }`}
         >
-          {!isCollapsed && 'Reports & Analytics'}
-        </h2> */}
+          {!isCollapsed && 'communication'}
+        </h2>
         <nav className="mt-2">
           {reportsMenu.map((item) => renderNavItem(item))}
         </nav>

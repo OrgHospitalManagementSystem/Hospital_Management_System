@@ -10,3 +10,16 @@ export async function GET() {
 
   return NextResponse.json(user);
 }
+
+export async function DELETE() {
+  // بنحذف التوكن من الكوكيز عن طريق إعادة الكوكي فاضي ومنتهي
+  const response = NextResponse.json({ message: 'Logged out successfully' });
+
+  response.cookies.set('token', '', {
+    httpOnly: true,
+    path: '/',
+    expires: new Date(0), // منتهي
+  });
+
+  return response;
+}

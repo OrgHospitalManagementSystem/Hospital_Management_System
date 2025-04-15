@@ -69,11 +69,27 @@ export default function AdminLayout({ children }) {
                 <Menu className="h-6 w-6" />
               </button>
               
-              <div className="flex-shrink-0 flex items-center ml-2 md:ml-0">
+              {/* <div className="flex-shrink-0 flex items-center ml-2 md:ml-0">
                 <Link href="/adminDashboard" className="flex items-center">
                   <span className="text-xl font-bold text-white">Health Clinic</span>
                 </Link>
-              </div>
+                */}
+                   <div className="flex shrink-0 items-center">
+            <Link href="/" className="flex items-center group">
+              <svg 
+                className="h-8 w-8 mr-2 transition-transform duration-300 group-hover:scale-110" 
+                viewBox="0 0 40 40" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="40" height="40" rx="8" fill="#A5D4DC"/>
+                <path d="M12 20C12 16.13 15.13 13 19 13H29V27H19C15.13 27 12 23.87 12 20Z" fill="white"/>
+                <path d="M24 17V23M21 20H27" stroke="#415A80" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              <span className="text-xl font-bold text-white drop-shadow-sm">SmiloClinic</span>
+            </Link>
+              </div> 
+
             </div>
             
             <div className="flex items-center gap-4">
@@ -121,7 +137,7 @@ export default function AdminLayout({ children }) {
           <div className="h-full flex flex-col">
             <div className="h-16 flex items-center justify-between px-4 border-b border-[#D7E2E9]">
               <Link href="/adminDashboard" className="flex items-center">
-                <span className="text-lg font-bold text-[#415A80]">Health Clinic</span>
+                <span className="text-lg font-bold text-[#415A80]">SmiloClinic</span>
               </Link>
               <button 
                 onClick={() => setSidebarOpen(false)}

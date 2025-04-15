@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+// import { Menu, X } from "lucide-react";
 import { 
   MessageCircle, 
   Video,
@@ -11,6 +12,17 @@ import {
   Menu, 
   X 
 } from "lucide-react";
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Services", path: "/services" },
+  { name: "Articles", path: "/articles" },
+  { name: "Contact", path: "/contact" },
+  { name: "Book Appointment", path: "/patient/book" },
+  { name: "My Appointments", path: "/patient/my-appointments" },
+  { name: "Chat", path: "/chat" },  // Add chat link here
+  // { name: "Video Call", path: "/video-call" },   // Video Call link
+];
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -123,7 +135,7 @@ export default function Navbar() {
             {/* Communication Links - Icons Only with bigger size */}
             <div className="flex items-center space-x-3 ml-2">
               <IconOnlyNavLink href="/chat" icon={<MessageCircle size={20} />} title="Chat" current={pathname === "/chat"} />
-              <IconOnlyNavLink href="/video-call" icon={<Video size={20} />} title="Video Call" current={pathname === "/video-call"} />
+              {/* <IconOnlyNavLink href="/video-call" icon={<Video size={20} />} title="Video Call" current={pathname === "/video-call"} /> */}
             </div>
           </nav>
 

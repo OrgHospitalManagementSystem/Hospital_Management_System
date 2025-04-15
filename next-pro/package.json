@@ -17,6 +17,7 @@
     "formidable": "^3.5.2",
     "framer-motion": "^12.6.3",
     "inline-style-parser": "^0.2.4",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.487.0",
     "mongoose": "^8.13.2",

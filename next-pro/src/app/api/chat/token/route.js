@@ -6,7 +6,7 @@ import User from '@/models/User';
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get('userId');
-  const otherId = searchParams.get('with'); // المستخدم الآخر
+  const otherId = searchParams.get('with'); 
 
   const serverClient = StreamChat.getInstance(
     process.env.STREAM_API_KEY,

@@ -64,7 +64,7 @@ export default function PaymentPage() {
     fetchBooking();
   }, [id]);
 
-  const handlePayment = async () => {
+  const handleCashPayment = async () => {
     if (processing) return;
     
     // Validate card information if visa is selected
@@ -176,7 +176,6 @@ export default function PaymentPage() {
         <div className="border-b border-[#D7E2E9]">
           <div className="p-6">
             <h2 className="text-lg font-medium text-[#415A80] mb-4">Appointment Details</h2>
-            
             <div className="space-y-4">
               <div className="flex items-start">
                 <div className="bg-[#E5E7E9] p-2 rounded-full mr-3">
@@ -187,7 +186,6 @@ export default function PaymentPage() {
                   <p className="font-medium text-[#415A80]">{booking.doctor?.name || 'Not specified'}</p>
                 </div>
               </div>
-              
               <div className="flex items-start">
                 <div className="bg-[#E5E7E9] p-2 rounded-full mr-3">
                   <Calendar className="h-5 w-5 text-[#415A80]" />
@@ -197,7 +195,6 @@ export default function PaymentPage() {
                   <p className="font-medium text-[#415A80]">{formatDate(booking.date)}</p>
                 </div>
               </div>
-              
               <div className="flex items-start">
                 <div className="bg-[#E5E7E9] p-2 rounded-full mr-3">
                   <Clock className="h-5 w-5 text-[#415A80]" />
@@ -207,7 +204,6 @@ export default function PaymentPage() {
                   <p className="font-medium text-[#415A80]">{booking.time || 'Not specified'}</p>
                 </div>
               </div>
-              
               {booking.reason && (
                 <div className="flex items-start">
                   <div className="bg-[#E5E7E9] p-2 rounded-full mr-3">
@@ -244,18 +240,21 @@ export default function PaymentPage() {
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 className="block w-full p-3 pl-10 border border-[#D7E2E9] rounded-lg bg-[#E5E7E9] focus:ring-[#A5D4DC] focus:border-[#A5D4DC] focus:outline-none appearance-none"
               >
-                <option value="visa">Credit/Debit Card (Visa/Mastercard)</option>
+                <option value="visa">Visa / MasterCard</option>
+                <option value="paypal">PayPal</option>
                 <option value="click">Click Payment</option>
                 <option value="cash">Cash on Visit</option>
               </select>
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 {paymentMethod === 'visa' && <CreditCard className="h-5 w-5 text-gray-500" />}
+                {paymentMethod === 'paypal' && <CreditCard className="h-5 w-5 text-gray-500" />}
                 {paymentMethod === 'click' && <CheckCircle className="h-5 w-5 text-gray-500" />}
                 {paymentMethod === 'cash' && <DollarSign className="h-5 w-5 text-gray-500" />}
               </div>
             </div>
           </div>
-          
+
+          {/* Payment Links */}
           {paymentMethod === 'visa' && (
             <div className="bg-[#E5E7E9]/50 p-4 rounded-lg mb-6">
               <div className="space-y-4">

@@ -1714,25 +1714,25 @@ function DoctorDashboardPatients() {
         </div>
 
         {/* قسم يعرض حجوزات اليوم المختار تفصيليًا */}
-        <div className="mt-4">
-          <h3 className="font-medium text-lg mb-2">
-            Appointments for {selectedDate.toDateString()}
-          </h3>
-          <div className="divide-y">
-            {getBookingsForDate(selectedDate).map((b) => (
-              <div key={b._id} className="py-2 flex justify-between items-center">
-                <div>
-                  <span className="font-medium">{b.time}</span> - {b?.patient?.name || 'Unknown'}
-                </div>
-              </div>
-            ))}
-            {getBookingsForDate(selectedDate).length === 0 && (
-              <div className="py-2 text-gray-500 text-center">
-                No appointments for this day
-              </div>
-            )}
-          </div>
+        <div className="mt-4 max-w-sm mx-auto border rounded-md shadow-sm">
+  <h3 className="font-medium text-lg mb-2 p-3 bg-gray-50 border-b">
+    Appointments for {selectedDate.toDateString()}
+  </h3>
+  <div className="divide-y">
+    {getBookingsForDate(selectedDate).map((b) => (
+      <div key={b._id} className="py-2 px-3 flex justify-between items-center">
+        <div>
+          <span className="font-medium">{b.time}</span> - {b?.patient?.name || 'Unknown'}
         </div>
+      </div>
+    ))}
+    {getBookingsForDate(selectedDate).length === 0 && (
+      <div className="py-4 text-gray-500 text-center">
+        No appointments for this day
+      </div>
+    )}
+  </div>
+</div>
       </div>
     );
   };

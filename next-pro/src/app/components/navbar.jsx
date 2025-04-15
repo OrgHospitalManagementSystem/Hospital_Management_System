@@ -135,7 +135,7 @@ export default function Navbar() {
             {/* Communication Links - Icons Only with bigger size */}
             <div className="flex items-center space-x-3 ml-2">
               <IconOnlyNavLink href="/chat" icon={<MessageCircle size={20} />} title="Chat" current={pathname === "/chat"} />
-              <IconOnlyNavLink href="/video-call" icon={<Video size={20} />} title="Video Call" current={pathname === "/video-call"} />
+              {/* <IconOnlyNavLink href="/video-call" icon={<Video size={20} />} title="Video Call" current={pathname === "/video-call"} /> */}
             </div>
           </nav>
 

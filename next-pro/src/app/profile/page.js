@@ -472,7 +472,7 @@ import { format } from "date-fns";
 import {
   Calendar,
   Clock,
-  User as UserIcon,
+   UserIcon,
   FileText,
   AlertCircle,
   X as CloseIcon,
@@ -547,7 +547,13 @@ export default function ProfilePage() {
   const [appointments, setAppointments] = useState([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
   const [appointmentsError, setAppointmentsError] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
+  const filteredAppointments =
+    statusFilter === "all"
+      ? appointments
+      : appointments.filter((app) => app.status === statusFilter);
+  
   // Cancellation states
   const [cancelReason, setCancelReason] = useState("");
   const [cancelId, setCancelId] = useState(null);
@@ -814,143 +820,160 @@ export default function ProfilePage() {
 
       {/* Appointments Section */}
       <section className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="border-b border-[#D7E2E9] p-6">
-          <h2 className="text-2xl font-bold text-[#415A80]">My Appointments</h2>
-          <p className="text-gray-500 mt-1">View and manage your upcoming appointments</p>
+      <div className="border-b border-[#D7E2E9] p-6">
+        <h2 className="text-2xl font-bold text-[#415A80]">My Appointments</h2>
+        <p className="text-gray-500 mt-1">View and manage your upcoming appointments</p>
+
+        {/* Filter Buttons */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          {["all", "pending", "approved", "cancelled"].map((status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={`text-sm px-3 py-1 rounded-full border transition-colors ${
+                statusFilter === status
+                  ? "bg-[#415A80] text-white"
+                  : "bg-white text-[#415A80] border-[#415A80] hover:bg-[#F0F4F8]"
+              }`}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ))}
         </div>
+      </div>
 
-        <div className="p-6">
-          {/* Loading state */}
-          {loadingAppointments ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="flex flex-col items-center">
-                <Loader className="h-8 w-8 text-[#415A80] animate-spin" />
-                <p className="mt-4 text-gray-600">Loading your appointments...</p>
-              </div>
+      <div className="p-6">
+        {/* Loading state */}
+        {loadingAppointments ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="flex flex-col items-center">
+              <Loader className="h-8 w-8 text-[#415A80] animate-spin" />
+              <p className="mt-4 text-gray-600">Loading your appointments...</p>
             </div>
-          ) : appointmentsError ? (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
-              <div className="flex">
-                <AlertCircle className="h-5 w-5 mr-2" />
-                <span>{appointmentsError}</span>
-              </div>
+          </div>
+        ) : appointmentsError ? (
+          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
+            <div className="flex">
+              <AlertCircle className="h-5 w-5 mr-2" />
+              <span>{appointmentsError}</span>
             </div>
-          ) : appointments.length === 0 ? (
-            <div className="bg-[#F8FAFC] rounded-lg p-8 text-center">
-              <Calendar className="h-12 w-12 text-[#A5D4DC] mx-auto mb-4" />
-              <h3 className="text-xl font-medium text-[#415A80] mb-2">
-                No Appointments Found
-              </h3>
-              <p className="text-gray-600 mb-6">
-                You don't have any scheduled appointments at the moment.
-              </p>
-              <Link 
-                href="/book"
-                className="inline-flex items-center bg-[#415A80] hover:bg-[#A5D4DC] text-white px-4 py-2 rounded-lg transition-colors"
+          </div>
+        ) : filteredAppointments.length === 0 ? (
+          <div className="bg-[#F8FAFC] rounded-lg p-8 text-center">
+            <Calendar className="h-12 w-12 text-[#A5D4DC] mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-[#415A80] mb-2">
+              No Appointments Found
+            </h3>
+            <p className="text-gray-600 mb-6">
+              You don't have any scheduled appointments at the moment.
+            </p>
+            <Link 
+              href="/book"
+              className="inline-flex items-center bg-[#415A80] hover:bg-[#A5D4DC] text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              <Calendar className="h-5 w-5 mr-2" />
+              Book an Appointment
+            </Link>
+          </div>
+        ) : (
+          <div className="divide-y divide-[#D7E2E9] -mx-6">
+            {filteredAppointments.map((app) => (
+              <div
+                key={app._id}
+                className="p-6 hover:bg-[#F8FAFC] transition-colors"
               >
-                <Calendar className="h-5 w-5 mr-2" />
-                Book an Appointment
-              </Link>
-            </div>
-          ) : (
-            <div className="divide-y divide-[#D7E2E9] -mx-6">
-              {appointments.map((app) => (
-                <div
-                  key={app._id}
-                  className="p-6 hover:bg-[#F8FAFC] transition-colors"
-                >
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-5">
-                    {/* Appointment details */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <div className="bg-[#E5E7E9] p-2 rounded-full">
-                          <UserIcon className="h-5 w-5 text-[#415A80]" />
-                        </div>
-                        <div>
-                          <span className="font-medium text-[#415A80]">
-                            Dr. {app.doctor?.name || "Unknown"}
-                          </span>
-                          {app.doctor?.specialty && (
-                            <span className="text-sm text-gray-500 ml-1">
-                              ({app.doctor.specialty})
-                            </span>
-                          )}
-                        </div>
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-5">
+                  {/* Appointment details */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-[#E5E7E9] p-2 rounded-full">
+                        <UserIcon className="h-5 w-5 text-[#415A80]" />
                       </div>
-
-                      <div className="flex items-center gap-2">
-                        <div className="bg-[#E5E7E9] p-2 rounded-full">
-                          <Calendar className="h-5 w-5 text-[#415A80]" />
-                        </div>
-                        <span className="text-gray-700">
-                          {format(new Date(app.date), "EEEE, MMMM d, yyyy")}
+                      <div>
+                        <span className="font-medium text-[#415A80]">
+                          Dr. {app.doctor?.name || "Unknown"}
                         </span>
+                        {app.doctor?.specialty && (
+                          <span className="text-sm text-gray-500 ml-1">
+                            ({app.doctor.specialty})
+                          </span>
+                        )}
                       </div>
+                    </div>
 
-                      <div className="flex items-center gap-2">
-                        <div className="bg-[#E5E7E9] p-2 rounded-full">
-                          <Clock className="h-5 w-5 text-[#415A80]" />
-                        </div>
-                        <span className="text-gray-700">{app.time || "Time not specified"}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="bg-[#E5E7E9] p-2 rounded-full">
+                        <Calendar className="h-5 w-5 text-[#415A80]" />
                       </div>
+                      <span className="text-gray-700">
+                        {format(new Date(app.date), "EEEE, MMMM d, yyyy")}
+                      </span>
+                    </div>
 
-                      {app.reason && (
-                        <div className="flex items-start gap-2">
-                          <div className="bg-[#E5E7E9] p-2 rounded-full mt-0.5">
-                            <FileText className="h-5 w-5 text-[#415A80]" />
-                          </div>
-                          <span className="text-gray-700">{app.reason}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="bg-[#E5E7E9] p-2 rounded-full">
+                        <Clock className="h-5 w-5 text-[#415A80]" />
+                      </div>
+                      <span className="text-gray-700">{app.time || "Time not specified"}</span>
+                    </div>
+
+                    {app.reason && (
+                      <div className="flex items-start gap-2">
+                        <div className="bg-[#E5E7E9] p-2 rounded-full mt-0.5">
+                          <FileText className="h-5 w-5 text-[#415A80]" />
                         </div>
+                        <span className="text-gray-700">{app.reason}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Status and action buttons */}
+                  <div className="flex flex-col items-end gap-3">
+                    <div className="space-y-2">
+                      {getStatusBadge(app.status)}
+                      {app.paymentStatus && (
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <CreditCard className="w-3 h-3 mr-1" />
+                          {app.paymentStatus === "paid" ? "Paid" : "Payment Due"}
+                        </span>
                       )}
                     </div>
 
-                    {/* Status and action buttons */}
-                    <div className="flex flex-col items-end gap-3">
-                      <div className="space-y-2">
-                        {getStatusBadge(app.status)}
-                        {app.paymentStatus && (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            <CreditCard className="w-3 h-3 mr-1" />
-                            {app.paymentStatus === "paid" ? "Paid" : "Payment Due"}
-                          </span>
-                        )}
-                      </div>
+                    <div className="mt-2 space-y-2">
+                      {app.status === "pending" && (
+                        <button
+                          onClick={() => canCancel(app.date, app.time) && confirmCancel(app._id)}
+                          className={`text-sm font-medium inline-flex items-center px-3 py-1.5 rounded-md transition-colors ${
+                            canCancel(app.date, app.time)
+                              ? "bg-red-50 text-red-600 hover:bg-red-100"
+                              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                          }`}
+                          disabled={!canCancel(app.date, app.time)}
+                          title={!canCancel(app.date, app.time) ? "Cannot cancel appointments less than 1 hour before start time" : ""}
+                        >
+                          <XCircle className="h-4 w-4 mr-1.5" />
+                          Cancel Appointment
+                        </button>
+                      )}
 
-                      <div className="mt-2 space-y-2">
-                        {app.status === "pending" && (
-                          <button
-                            onClick={() => canCancel(app.date, app.time) && confirmCancel(app._id)}
-                            className={`text-sm font-medium inline-flex items-center px-3 py-1.5 rounded-md transition-colors ${
-                              canCancel(app.date, app.time)
-                                ? "bg-red-50 text-red-600 hover:bg-red-100"
-                                : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            }`}
-                            disabled={!canCancel(app.date, app.time)}
-                            title={!canCancel(app.date, app.time) ? "Cannot cancel appointments less than 1 hour before start time" : ""}
-                          >
-                            <XCircle className="h-4 w-4 mr-1.5" />
-                            Cancel Appointment
-                          </button>
-                        )}
-
-                        {app.status === "approved" && (!app.paymentStatus || app.paymentStatus !== "paid") && (
-                          <Link
-                            href={`/patient/payment/${app._id}`}
-                            className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-1.5 rounded-md transition-colors flex items-center"
-                          >
-                            <CreditCard className="h-4 w-4 mr-2" />
-                            Pay Now
-                          </Link>
-                        )}
-                      </div>
+                      {app.status === "approved" && (!app.paymentStatus || app.paymentStatus !== "paid") && (
+                        <Link
+                          href={`/patient/payment/${app._id}`}
+                          className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-1.5 rounded-md transition-colors flex items-center"
+                        >
+                          <CreditCard className="h-4 w-4 mr-2" />
+                          Pay Now
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
 
       {/* Medical Report Section */}
       {userData.report && (

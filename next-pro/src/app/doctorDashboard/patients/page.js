@@ -1960,7 +1960,7 @@ function DoctorDashboardPatient() {
                       <td className="py-4 px-6 text-gray-600">{patient.patient.address}</td>
                       <td className="py-4 px-6 text-gray-600">{patient.date}</td>
                       <td className="py-4 px-6 text-gray-600">{patient.time}</td>
-                      <td className="py-4 px-6 text-gray-600">{patient.reason}</td>
+                      <td className="py-4 px-6 text-gray-600 w-0.005">{patient.reason}</td>
                       <td className="py-4 px-6">
                         <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${statusColors[patient.patient.status]}`}>
                           {patient.patient.status}

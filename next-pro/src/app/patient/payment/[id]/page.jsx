@@ -229,7 +229,7 @@ export default function PaymentPage() {
           <div className="bg-[#E5E7E9]/50 p-4 rounded-lg mb-6">
             <div className="flex justify-between items-center">
               <span className="text-gray-700">Appointment Fee</span>
-              <span className="font-bold text-[#415A80]">${booking.doctor?.fee || 50}.00</span>
+              <span className="font-bold text-[#415A80]">JD{booking.doctor?.fee || 50}.00</span>
             </div>
           </div>
           
@@ -265,6 +265,7 @@ export default function PaymentPage() {
                     type="text" 
                     name="cardNumber"
                     placeholder="4242 4242 4242 4242" 
+                   maxLength="16"
                     value={cardInfo.cardNumber}
                     onChange={handleCardInfoChange}
                     className="w-full p-2 border border-gray-300 rounded-md bg-white" 
@@ -277,6 +278,8 @@ export default function PaymentPage() {
                       type="text" 
                       name="expiryDate"
                       placeholder="MM/YY" 
+                        pattern="^(0[1-9]|1[0-2])\/\d{2}$"
+  maxLength="5"
                       value={cardInfo.expiryDate}
                       onChange={handleCardInfoChange}
                       className="w-full p-2 border border-gray-300 rounded-md bg-white" 
@@ -288,6 +291,7 @@ export default function PaymentPage() {
                       type="text" 
                       name="cvc"
                       placeholder="123" 
+                       maxLength="3"
                       value={cardInfo.cvc}
                       onChange={handleCardInfoChange}
                       className="w-full p-2 border border-gray-300 rounded-md bg-white" 
@@ -315,7 +319,7 @@ export default function PaymentPage() {
                 Processing Payment...
               </span>
             ) : (
-              `Confirm Payment ($${booking.doctor?.fee || 50}.00)`
+              `Confirm Payment (JD${booking.doctor?.fee || 50}.00)`
             )}
           </button>
           

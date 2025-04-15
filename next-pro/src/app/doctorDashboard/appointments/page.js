@@ -1517,7 +1517,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // استخدم مكتبة لمساعدة في تواريخ مثل dayjs أو date-fns إن أحببت، 
 // لكن هنا سنكتفي بالجافاسكربت المدمج.
 
@@ -1575,8 +1576,10 @@ function DoctorDashboardPatients() {
           booking._id === bookingId ? { ...booking, status: newStatus } : booking
         )
       );
+      toast.success("Patient status updated successfully!");
     } catch (error) {
       console.error("Error updating booking status:", error);
+      toast.error("Failed to update patient status")
     }
   };
 

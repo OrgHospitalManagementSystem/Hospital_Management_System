@@ -1832,8 +1832,8 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
 function DoctorDashboardPatient() {
   const [patients, setPatients] = useState([]);
   const [nameFilter, setNameFilter] = useState("");

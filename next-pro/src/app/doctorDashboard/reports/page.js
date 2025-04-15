@@ -1095,6 +1095,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const UploadReportForm = () => {
   const [bookings, setBookings] = useState([]);
@@ -1186,7 +1187,7 @@ const UploadReportForm = () => {
 
       setSuccess("Report uploaded successfully!");
       setFile(null);
-
+toast.success("Report uploaded successfully!");
       // Reset file input value
       const fileInput = document.getElementById(`report-${bookingId}`);
       if (fileInput) fileInput.value = "";

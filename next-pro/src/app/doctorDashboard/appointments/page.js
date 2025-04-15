@@ -1575,8 +1575,10 @@ function DoctorDashboardPatients() {
           booking._id === bookingId ? { ...booking, status: newStatus } : booking
         )
       );
+      toast.success("Patient status updated successfully!");
     } catch (error) {
       console.error("Error updating booking status:", error);
+      toast.error("Failed to update patient status")
     }
   };
 

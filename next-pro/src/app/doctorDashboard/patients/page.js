@@ -1832,7 +1832,8 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function DoctorDashboardPatient() {
   const [patients, setPatients] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
@@ -1859,9 +1860,11 @@ function DoctorDashboardPatient() {
         prevPatients.map((patient) =>
           patient._id === patientId ? { ...patient, status: newStatus } : patient
         )
-      );
+       
+      ); toast.success("Patient status updated successfully!");
     } catch (error) {
       console.error("Error updating patient status:", error);
+      toast.error("Failed to update patient status");
     }
   };
 
@@ -1917,7 +1920,7 @@ function DoctorDashboardPatient() {
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-2 border"
                 >
-                  <option value="">All Statuses</option>
+                  <option value="">All Status</option>
                   <option value="Active">Active</option>
                   <option value="Follow-up">Follow-up</option>
                   <option value="New">New</option>

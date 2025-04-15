@@ -1,151 +1,5 @@
 
 
-
-// 'use client';
-
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import { useRouter } from 'next/navigation';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
-
-// export default function BookPage() {
-//   const router = useRouter();
-//   const [doctors, setDoctors] = useState([]);
-//   const [selectedDoctor, setSelectedDoctor] = useState('');
-//   const [selectedDate, setSelectedDate] = useState(null);
-//   const [availableTimes, setAvailableTimes] = useState([]);
-//   const [selectedTime, setSelectedTime] = useState('');
-//   const [reason, setReason] = useState('');
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     axios.get('/api/doctors/with-availability')
-//       .then(res => setDoctors(res.data))
-//       .finally(() => setLoading(false));
-//   }, []);
-
-//   useEffect(() => {
-//     if (!selectedDoctor || !selectedDate) return;
-
-//     const doc = doctors.find(d => d._id === selectedDoctor);
-//     const selectedDay = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
-
-//     const availability = doc.availability.find(a => a.day === selectedDay);
-//     if (!availability || !availability.from || !availability.to) {
-//       setAvailableTimes([]);
-//       return;
-//     }
-
-//     const start = parseInt(availability.from.split(':')[0]);
-//     const end = parseInt(availability.to.split(':')[0]);
-//     const times = [];
-
-//     for (let h = start; h < end; h++) {
-//       times.push(`${h.toString().padStart(2, '0')}:00`);
-//     }
-
-//     const dateKey = `${doc._id}_${selectedDate.toISOString().split('T')[0]}`;
-//     const booked = doc.bookedSlots[dateKey] || [];
-
-//     const filtered = times.map(t => ({
-//       time: t,
-//       disabled: booked.includes(t),
-//     }));
-
-//     setAvailableTimes(filtered);
-//   }, [selectedDoctor, selectedDate, doctors]);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!selectedDoctor || !selectedDate || !selectedTime || !reason) return;
-
-//     try {
-//       await axios.post('/api/bookings', {
-//         doctor: selectedDoctor,
-//         date: selectedDate,
-//         time: selectedTime,
-//         reason,
-//       });
-//       router.push('/patient/booking-success');
-//     } catch (err) {
-//       alert('فشل في إرسال الطلب');
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow">
-//       <h1 className="text-2xl font-bold mb-4">حجز موعد</h1>
-
-//       {loading ? <p>جاري تحميل الأطباء...</p> : (
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           <div>
-//             <label className="block mb-1">اختر الطبيب</label>
-//             <select value={selectedDoctor} onChange={e => setSelectedDoctor(e.target.value)} className="w-full border p-2 rounded">
-//               <option value="">اختر...</option>
-//               {doctors.map(doc => (
-//                 <option key={doc._id} value={doc._id}>{doc.name}</option>
-//               ))}
-//             </select>
-//           </div>
-
-//           {selectedDoctor && (
-//             <div>
-//               <label className="block mb-1">اختر التاريخ</label>
-//               <Calendar
-//                 onChange={setSelectedDate}
-//                 value={selectedDate}
-//                 minDate={new Date()}
-//               />
-//             </div>
-//           )}
-
-//           {selectedDate && availableTimes.length > 0 && (
-//             <div>
-//               <label className="block mt-4 mb-1">الأوقات المتاحة</label>
-//               <div className="grid grid-cols-3 gap-2">
-//                 {availableTimes.map(slot => (
-//                   <button
-//                     key={slot.time}
-//                     type="button"
-//                     disabled={slot.disabled}
-//                     onClick={() => setSelectedTime(slot.time)}
-//                     className={`p-2 rounded text-sm ${
-//                       slot.disabled
-//                         ? 'bg-gray-300 cursor-not-allowed'
-//                         : slot.time === selectedTime
-//                         ? 'bg-green-600 text-white'
-//                         : 'bg-blue-500 text-white hover:bg-blue-600'
-//                     }`}
-//                   >
-//                     {slot.time}
-//                   </button>
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-
-//           {selectedTime && (
-//             <div className="mt-2 text-green-700 font-semibold">
-//               تم اختيار: {selectedDate.toLocaleDateString('ar-EG')} الساعة {selectedTime}
-//             </div>
-//           )}
-
-//           <div>
-//             <label className="block mb-1">سبب الحجز</label>
-//             <textarea value={reason} onChange={e => setReason(e.target.value)} className="w-full border p-2 rounded" rows={3} />
-//           </div>
-
-//           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-//             تأكيد الحجز
-//           </button>
-//         </form>
-//       )}
-//     </div>
-//   );
-// }
-
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -243,8 +97,15 @@ export default function BookPage() {
       });
       router.push('/patient/booking-success');
     } catch (err) {
-      console.error('Booking error:', err);
+
+
+
+    if (err.response?.status === 401) {
+      router.push('/login');
+    } else {
       alert('Failed to submit booking request. Please try again.');
+    }
+
     } finally {
       setSubmitting(false);
     }
